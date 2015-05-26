@@ -1,10 +1,27 @@
+//TO RUN: node algo.js
+
 'use strict';
+
+var data = require('./data.js');
+
+var getCount = function(jobs) {
+  var storage = {};
+  for(var i = 0; i < jobs.length; i++) {
+    for(var j = 0; j < jobs[i].tags.length; j++) {
+      if(jobs[i].tags[j].tag_type === 'SkillTag') {
+        storage[jobs[i].tags[j].name] = true;
+      }
+    }
+  }
+  return storage;
+}
+
+var unique_skills = Object.keys(getCount(data.jobs));
 
 var calculateValue = function(test, jobs) {
   var t = [];
   var f = [];
 
-  //populate two arrays defining all the jobs that have a particular skill VS an array that doesnt
   for (var i = 0; i < jobs.length; i++) {
     for(var j = 0; j < jobs[i].tags.length; j++) {
       if(jobs[i].tags[j].name === test) {
@@ -15,7 +32,8 @@ var calculateValue = function(test, jobs) {
     }
   };
 
-  //reduce to a single value for the average salary of those that have a skill vs those that don't
+  console.log('TEST: ' + test + " true: " + t.length + " false: " + f.length);
+
   var has = t.reduce(function(a, b){
     return a + b.salary_max; 
   }, 0) / t.length;
@@ -26,3 +44,7 @@ var calculateValue = function(test, jobs) {
 
   return has - hasnt;
 }
+
+unique_skills.forEach(function(val, k){
+  console.log(val + ": " + calculateValue(val, data.jobs));
+});
