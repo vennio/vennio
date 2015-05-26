@@ -6,6 +6,8 @@ var promise = require('bluebird');
 var fs = promise.promisifyAll(require('fs'));
 var mongoose = require('mongoose');
 
+var port = process.env.PORT || 3000;
+
 var db = process.env.MONGOLAB_URI || 'mongodb://localhost/vennio';
 mongoose.connect(db);
 
@@ -285,7 +287,7 @@ app.get('/tagSalary', function(req, res) {
 });
 
 
-var server = app.listen(3000, function () {
+var server = app.listen(port, function () {
 
   var host = server.address().address;
   var port = server.address().port;
