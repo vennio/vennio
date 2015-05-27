@@ -5,6 +5,11 @@ var rp = require('request-promise');
 var promise = require('bluebird');
 var fs = promise.promisifyAll(require('fs'));
 var mongoose = require('mongoose');
+var helper = require('./helper.js');
+
+// Based on the /getCurrencies, use Google currency, manually populate currencies multiplier below on date 5/26
+var currencyMultipliers = helper.currencyMultipliers;
+
 
 var port = process.env.PORT || 3000;
 var db = process.env.MONGOLAB_URI || 'mongodb://localhost/vennio';
@@ -115,16 +120,138 @@ app.get('/viewJobs', function(req, res) {
 app.get('/outliers', function(req, res) {
   var query = {};
   var skill = req.params.skill;
-  var outlier = {"salary_max": {"$gt": 10000000}}
+  var outlier = {"salary_max": {"$gt": 100000}}
   JobsClean.find(outlier, function(err, jobs) {
     console.log(jobs);
     res.send(jobs);
   });
 });
 
+
 //A shell for getting all currencies from the database
 app.get('/getCurrencies', function(req, res) {
-  res.send('END');
+  var currencies = {};
+  var query = {};
+  var projection = {};
+  projection.currency_code = true;
+  JobsClean.find(query, projection, null, function(err, currencyCodes){
+  // JobsClean.find(query, function(err, currencyCodes){
+    var result = currencyCodes.length;
+    currencyCodes.forEach(function(currencyCode){
+      var currency_code = currencyCode.currency_code;
+      if (!currencies.hasOwnProperty(currency_code)){
+        currencies[currency_code] = 1;
+      } else {
+        currencies[currency_code] += 1;
+      }
+    });
+
+    res.send(currencies);
+  });
+});
+
+app.get('/roles', function(req, res) {
+  var roles = {};
+  var query = {};
+  var projection = {};
+  projection.roles = true;
+  JobsClean.find(query, projection, null, function(err, roles){
+  // JobsClean.find(query, function(err, roles){
+    var result = roles.length;
+    roles.forEach(function(role){
+      var currency_code = role.role;
+      if (!roles.hasOwnProperty(role)){
+        roles[role] = 1;
+      } else {
+        roles[role] += 1;
+      }
+    });
+
+    res.send(roles);
+  });
+});
+
+var getAvgSalaryForSkills = function(skills){
+  var avgSalaries = {};
+  skills.forEach(function(skill){
+    var skill = skill.toLowerCase();
+    var query = {};
+    query['skills.' + skill] = {$exists: true};
+    JobsClean.find(query, function(err, jobs) {
+      var count = jobs.length;
+      console.log(count);
+      var runningSalary_min = 0;
+      var runningSalary_max = 0;
+      jobs.forEach(function(job) {
+        var convertedSalary = helper.validSalaryAndConvertionToUSD(job)
+        if (convertedSalary){
+          runningSalary_min += convertedSalary.min;
+          runningSalary_max += convertedSalary.max;
+        }
+        // if return null mean current job is an outlier 
+        else {
+          count -= 1;
+        }
+        
+      });
+      var avg = (runningSalary_min+runningSalary_max)/2
+      var salary = avg/count
+      var avgSalary = salary.toString();
+      avgSalaries[skill] = avgSalary;
+      console.log("with Skills");
+      console.log(avgSalaries);
+    });
+  });
+  return avgSalaries;
+};
+
+var getAvgSalaryForNotSkills = function(skills){
+  var avgSalaries = {};
+  skills.forEach(function(skill){
+    var skill = skill.toLowerCase();
+    console.log(skill);
+    var query = {};
+    query['skills.' + skill] = {$exists: true};
+    JobsClean.find({"skills.angular_js": {$exists: false}}, function(err, jobs) {
+      console.log("err:",err);
+      var count = jobs.length;
+      console.log(count);
+      var runningSalary_min = 0;
+      var runningSalary_max = 0;
+      jobs.forEach(function(job) {
+        var convertedSalary = helper.validSalaryAndConvertionToUSD(job)
+        if (convertedSalary){
+          runningSalary_min += convertedSalary.min;
+          runningSalary_max += convertedSalary.max;
+        }
+        // if return null mean current job is an outlier 
+        else {
+          count -= 1;
+        }
+        
+      });
+      var avg = (runningSalary_min+runningSalary_max)/2
+      var salary = avg/count
+      var avgSalary = salary.toString();
+      avgSalaries[skill] = avgSalary;
+      console.log("Not Skills");
+      console.log(avgSalaries);
+    });
+  });
+  return avgSalaries;
+};
+
+// var salariesForSkill = getAvgSalaryForSkills(helper.skills);
+// var salariesNotSkill = getAvgSalaryForNotSkills(helper.skills);
+// var salariesCombined = {}
+// helper.skills.forEach(function(skill){
+//   salariesCombined[skill] = [salariesForSkill[skill], salariesNotSkill[skill]];
+// });
+// console.log("Hate: ", salariesForSkill);
+// console.log("Love: ",salariesCombined);
+
+app.get('/avgSalaries', function(req, res){
+  var avgSalaries = getAvgSalaryForSkills(helper.skills);
 });
 
 //Send average salaries for Jobs that have a specific skill
@@ -138,11 +265,19 @@ app.get('/skill/:skill', function(req, res) {
     var runningSalary_min = 0;
     var runningSalary_max = 0;
     jobs.forEach(function(job) {
-      runningSalary_min += job.salary_min;
-      runningSalary_max += job.salary_max;
+      var convertedSalary = helper.validSalaryAndConvertionToUSD(job)
+      if (convertedSalary){
+        runningSalary_min += convertedSalary.min;
+        runningSalary_max += convertedSalary.max;
+      }
+      // if return null mean current job is an outlier 
+      else {
+        count -= 1;
+      }
+      
     });
     var avg = (runningSalary_min+runningSalary_max)/2
-    res.send(avg/count + '');
+    res.send(avg/count + ' counts: ' + count);
   });
 });
 
@@ -157,11 +292,18 @@ app.get('/notSkill/:skill', function(req, res) {
     var runningSalary_min = 0;
     var runningSalary_max = 0;
     jobs.forEach(function(job) {
-      runningSalary_min += job.salary_min;
-      runningSalary_max += job.salary_max;
+      var convertedSalary = helper.validSalaryAndConvertionToUSD(job)
+      if (convertedSalary){
+        runningSalary_min += convertedSalary.min;
+        runningSalary_max += convertedSalary.max;
+      }
+      // if return null mean current job is an outlier 
+      else {
+        count -= 1;
+      }
     });
     var avg = (runningSalary_min+runningSalary_max)/2
-    res.send(avg/count + '');
+    res.send(avg/count + ' counts: ' + count);
   });
 });
 
