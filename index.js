@@ -7,10 +7,6 @@ var fs = promise.promisifyAll(require('fs'));
 var mongoose = require('mongoose');
 var helper = require('./helper.js');
 
-// Based on the /getCurrencies, use Google currency, manually populate currencies multiplier below on date 5/26
-var currencyMultipliers = helper.currencyMultipliers;
-
-
 var port = process.env.PORT || 3000;
 var db = process.env.MONGOLAB_URI || 'mongodb://localhost/vennio';
 mongoose.connect(db);
