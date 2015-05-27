@@ -237,15 +237,6 @@ var getAvgSalaryForNotSkills = function(skills){
   return avgSalaries;
 };
 
-// var salariesForSkill = getAvgSalaryForSkills(helper.skills);
-// var salariesNotSkill = getAvgSalaryForNotSkills(helper.skills);
-// var salariesCombined = {}
-// helper.skills.forEach(function(skill){
-//   salariesCombined[skill] = [salariesForSkill[skill], salariesNotSkill[skill]];
-// });
-// console.log("Hate: ", salariesForSkill);
-// console.log("Love: ",salariesCombined);
-
 app.get('/avgSalaries', function(req, res){
   var avgSalaries = getAvgSalaryForSkills(helper.skills);
 });
