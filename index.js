@@ -198,7 +198,6 @@ var getAvgSalaryForSkills = function(skills){
       console.log(avgSalaries);
     });
   });
-  return avgSalaries;
 };
 
 var getAvgSalaryForNotSkills = function(skills){
@@ -208,8 +207,7 @@ var getAvgSalaryForNotSkills = function(skills){
     console.log(skill);
     var query = {};
     query['skills.' + skill] = {$exists: true};
-    JobsClean.find({"skills.angular_js": {$exists: false}}, function(err, jobs) {
-      console.log("err:",err);
+    JobsClean.find(query, function(err, jobs) {
       var count = jobs.length;
       console.log(count);
       var runningSalary_min = 0;
@@ -234,8 +232,11 @@ var getAvgSalaryForNotSkills = function(skills){
       console.log(avgSalaries);
     });
   });
-  return avgSalaries;
 };
+
+// Call the function below would console.log to console the results
+// getAvgSalaryForSkills(helper.skills);
+// getAvgSalaryForNotSkills(helper.skills);
 
 app.get('/avgSalaries', function(req, res){
   var avgSalaries = getAvgSalaryForSkills(helper.skills);

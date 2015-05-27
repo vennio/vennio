@@ -8,8 +8,6 @@ exports.test = function(req, res){
   res.send('test');
 };
 
-
-
 var currencyMultipliers = {"CAD":0.80,"USD":1,"INR":0.016,"EUR":1.09,"CNY":0.16,"GBP":1.54,"SGD":0.74,"JPY":0.0081};
 var salaryUpperbound = {max: Math.pow(10,6), min: Math.pow(10,6)*0.5};
 var salaryLowerbound = Math.pow(10,4) * 5;
