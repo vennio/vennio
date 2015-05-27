@@ -167,6 +167,7 @@ app.get('/roles', function(req, res) {
   });
 });
 
+// Given a list skills, console.log avg salaries for each skill
 var getAvgSalaryForSkills = function(skills){
   var avgSalaries = {};
   skills.forEach(function(skill){
@@ -200,6 +201,7 @@ var getAvgSalaryForSkills = function(skills){
   });
 };
 
+// Give a list of skills, calculate the avg salaries if you don't have a particular skill
 var getAvgSalaryForNotSkills = function(skills){
   var avgSalaries = {};
   skills.forEach(function(skill){
