@@ -1,4 +1,6 @@
-* {b}
+body {
+  font-family: "aileronlight", Helvetica, Arial, sans-serif; 
+}
 
 .bg {
   background: url('../img/bg.jpg') no-repeat 50% 50% fixed; 
@@ -8,15 +10,31 @@
   -webkit-background-size: cover;
 }
 
-nav {
-  padding: 10px;
+.nav {
   background: rgba(0, 0, 0, 0.2);
   color: #fff;
+  height: 80px;
 }
+
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 40px;
+  text-transform: uppercase;
+}
+
+.main {
+  margin-top: 10px;
+}
+
 .module {
   padding: 10px;
   background: rgba(0, 0, 0, 0.4);
   -webkit-box-shadow: 0px 0px 32px 3px rgba(0,0,0,0.75);
   -moz-box-shadow: 0px 0px 32px 3px rgba(0,0,0,0.75);
   box-shadow: 0px 0px 32px -9px rgba(0,0,0,0.75);
+}
+
+text {
+  fill: #fff;
 }
