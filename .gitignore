@@ -1,3 +1,5 @@
 node_modules
 data.txt
 .grunt
+bower_components
+build
