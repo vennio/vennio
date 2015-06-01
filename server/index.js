@@ -367,19 +367,11 @@ var generateSkillsObject = function(){
       console.log('It\'s saved!');
     });
 
-
-    // console.log(jsonTransactions);
-    // transactions.forEach(function(transaction){
-    //   fs.appendFileSync('transactions.csv', transaction, function (err) {
-    //     if (err) throw err;
-    //     console.log('It\'s saved!');
-    //   });
-    //   // console.log(transaction);
-    // });
   });
 };
 
-generateSkillsObject();
+// Enable this function if you want to generate data for apriori algorithm
+// generateSkillsObject();
 
 
 
