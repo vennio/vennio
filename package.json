@@ -14,8 +14,11 @@
     "jsonfile": "^2.0.0",
     "mongo": "^0.1.0",
     "mongoose": "^4.0.3",
+    "pg": "^4.3.0",
+    "pg-hstore": "^2.3.2",
     "request": "^2.55.0",
-    "request-promise": "^0.4.2"
+    "request-promise": "^0.4.2",
+    "sequelize": "^3.1.1"
   },
   "devDependencies": {
     "browser-sync": "^2.7.6",

@@ -14,7 +14,7 @@ var paths = {
 };
 
 gulp.task('js', function() {
-  gulp.src([
+  return gulp.src([
     'client/bower_components/d3/d3.js',
     'client/js/*.js'
     ])
@@ -33,21 +33,32 @@ gulp.task('jshint', function() {
 })
 
 gulp.task('html', function() {
-  gulp.src('client/*.html').pipe(gulp.dest('build'));
+  return gulp.src('client/*.html').pipe(gulp.dest('build'));
 });
 
 gulp.task('img', function() {
-  gulp.src('client/img/**').pipe(gulp.dest('build/img'));
+  return gulp.src('client/img/**').pipe(gulp.dest('build/img'));
+});
+
+gulp.task('fonts', function() {
+  return gulp.src('client/font/**').pipe(gulp.dest('build/css'));
+});
+
+gulp.task('css', function() {
+  return gulp.src([
+    'client/bower_components/skeleton/css/normalize.css',
+    'client/bower_components/skeleton/css/skeleton.css',
+    'client/font/stylesheet.css'
+  ])
+  .pipe(concat('vendor.css'))
+  .pipe(gulp.dest('build/css'));
 });
 
 gulp.task('sass', function() {
   return gulp.src([
-    'client/bower_components/skeleton/normalize.css',
-    'client/bower_components/skeleton/skeleton.css',
-    'client/font/stylesheet.css',
     "client/css/*.scss"
   ])
-  .pipe(sass())
+  .pipe(sass({outputStyle: 'compressed'}))
   .pipe(gulp.dest("build/css"))
   .pipe(browserSync.stream());
 });
@@ -67,10 +78,10 @@ gulp.task('bsync', function() {
 });
 
 gulp.task('bs-reload', function () {
-  browserSync.reload();
+  return browserSync.reload();
 })
 
-gulp.task('default', ['sass', 'bsync', 'js', 'html', 'img'], function() {
+gulp.task('default', ['sass', 'css', 'fonts', 'bsync', 'js', 'html', 'img'], function() {
 
   gulp.watch(['client/js/*.js'], ['jshint','js']);
   gulp.watch(['client/css/**/*.scss'], ['sass']);
