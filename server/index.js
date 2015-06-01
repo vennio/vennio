@@ -297,6 +297,84 @@ app.get('/notSkill/:skill', function(req, res) {
   });
 });
 
+// Step 1. Populate an object with {'javascript': 1, 'express': 2}
+// Step 2. Go thru jobs, for arry skills, replace string with index from above object
+
+var generateSkillsObject = function(){
+  var query = {};
+  var projection = {};
+  projection.skills = true;
+  JobsClean.find(query, projection, null, function(err, jobs){
+    // jobs = [{'skills': {css:true, javascript: true}}, {}]
+    var skillsObj = {};
+    // initialize skill index, it's incremented for each new skill found
+    var index = 0;
+    // For testing purpose, replace with jobs once complete
+    var part = jobs.slice(1,10);
+
+    // Populate skillsObj with all unique skills as {'javascript': 0, 'express': 1}
+    jobs.forEach(function(skills, i){
+      // There are jobs without skills 
+      if (skills.skills){
+        for (var skill in skills.skills){
+          if (!skillsObj.hasOwnProperty(skill)){
+            skillsObj[skill] = index;
+            index+=1;
+          }
+        }
+      }
+    });
+    console.log(skillsObj);
+
+    // Convert skillsObj to array of skills
+    var skillsArray = [];
+    for (var skill in skillsObj){
+      skillsArray[skillsObj[skill]] = skill;
+    }
+    console.log(skillsArray);
+
+
+    // Convert all skills in String to its index in skillsArray
+    var transactions = [];
+    jobs.forEach(function(skills, i){
+      if (skills.skills){
+        var skillsArray = Object.keys(skills.skills);
+        var skillsConvertedToIndexes = skillsArray.map(function(skill){
+          return skillsObj[skill];
+        });
+        transactions.push(skillsConvertedToIndexes);
+      }
+    });
+    console.log(transactions);
+
+    // Stringify transactions, prepare for file writing
+    var transactionsStringified =  transactions.reduce(function(memo, transaction){
+      return memo + transaction.toString() + '\n';
+    }, '');
+
+    // Stringify skills, prepare for file writing
+    var skillsStringified =  skillsArray.reduce(function(memo, skill, index){
+      return memo + index + ',' + JSON.stringify(skill.toString()) + '\n';
+    }, '');
+
+    fs.writeFile('transactions.csv', transactionsStringified, function (err) {
+      if (err) throw err;
+      console.log('It\'s saved!');
+    });
+
+    fs.writeFile('skills.csv', skillsStringified, function (err) {
+      if (err) throw err;
+      console.log('It\'s saved!');
+    });
+
+  });
+};
+
+// Enable this function if you want to generate data for apriori algorithm
+// generateSkillsObject();
+
+
+
 //getTags is used to get a clean version of Tags, because the raw data consists of multiple versions of the same skill ex. Project_Manager, project-manager
 var getTags = function (str) {
   var result = [];
