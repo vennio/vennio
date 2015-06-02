@@ -107,9 +107,16 @@ app.get('/getjobs', function(req,res) {
 
 //Send all jobs from the table "JobsClean" to the user
 app.get('/viewJobs', function(req, res) {
-  JobsClean.find({}, function(err, jobs) {
+  Jobs.find({}, function(err, jobs) {
     res.send(jobs);
   });
+});
+
+app.get('/viewJobs/:page', function(req, res) {
+ var page = req.params.page;
+ Jobs.find({'page': page}, null, {sort: {'_id': 1}, limit: 1}, function(err, jobs) {
+   res.send(jobs);
+ });
 });
 
 //Send all jobs from the table "JobsClean" that have really high salaries to the user
