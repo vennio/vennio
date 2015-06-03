@@ -37,7 +37,7 @@ var barChart = function(data, config) {
 
 barChart.prototype.render = function() {
   var that = this;
-  console.log(this);
+  that.canvas.selectAll('g').remove();
   var bars = that.canvas.append('g')
     .attr("transform", "translate(0,0)")
     .attr('class','bars')
@@ -74,67 +74,60 @@ barChart.prototype.render = function() {
       .text(function(d){ return "$" + d+"k"; }).style({'fill':'#fff','font-size':'30px'});
 }
 
-  // Skills 
-  var frontEndSkills = ['Backbone.js', 'Coffeescript', 'Ember.js', 'HTML', 'CSS', 'Angular.js', 'D3', 'Bootstrap'];
-  var backEndSkills = ['Node.js', 'Express.js', 'MySQL', 'MongoDB', 'PostgreSQL', 'Django', 'Ruby on Rails'];
-  var center = ['javascript'];
-  var skills = [''].concat(frontEndSkills,backEndSkills,center);
-  
-  // Original dataset
-  // var categories= ['','Accessories', 'Audiophile', 'Camera & Photo', 'Cell Phones', 'Computers','eBook Readers','Gadgets','GPS & Navigation','Home Audio','Office Electronics','Portable Audio','Portable Video','Security & Surveillance','Service','Television & Video','Car & Vehicle'];
+var frontEndSkills = ['Backbone.js', 'Coffeescript', 'Ember.js', 'HTML', 'CSS', 'Angular.js', 'D3', 'Bootstrap'];
+var backEndSkills = ['Node.js', 'Express.js', 'MySQL', 'MongoDB', 'PostgreSQL', 'Django', 'Ruby on Rails'];
+var center = ['javascript'];
+var skills = [''].concat(frontEndSkills,backEndSkills,center);
 
-  // var dollars = [213,209,190,179,156,209,190,179,213,209,190,179,156,209,190,190];
+var generateSalaries = function(n){
+  var salaries = [];
+  for (var i = 0; i < n; i++){
+    var base = 90;
+    var salary = Math.floor(Math.random() * 20) + base;
+    salaries.push(salary);
+  }
+  return salaries;
+};
 
-  var generateSalaries = function(n){
-    var salaries = [];
-    for (var i = 0; i < n; i++){
-      var base = 90;
-      var salary = Math.floor(Math.random() * 20) + base;
-      salaries.push(salary);
-    }
-    return salaries;
-  };
-  
+var generateInput = function(){
+  var input = {};
+  var inputSize = Math.floor(skills.length * Math.random());
+  input.categories = skills.slice(0,10);
+  input.metrics = generateSalaries(input.categories.length - 1);
+  return input;
+};
 
-  var generateInput = function(){
-    var input = {};
-    var inputSize = Math.floor(skills.length * Math.random());
-    input.categories = skills.slice(0,10);
-    input.metrics = generateSalaries(input.categories.length - 1);
-    return input;
-  };
+var colWidth = $('.barchart').width();
 
-  var colWidth = $('.barchart').width();
+var b = new barChart(generateInput(), {
+  selector: '.wrapper1',
+  colors: ['#19C999'],
+  width: colWidth
+});
 
-	var b = new barChart(generateInput(), {
-    selector: '.wrapper1',
-    colors: ['#19C999'],
-    width: colWidth
-  });
+b.render();
 
+var b2 = new barChart(generateInput(), {
+  selector: '.wrapper2',
+  colors: ['#9686E9'],
+  width: colWidth
+})
+
+b2.render();
+
+var b3 = new barChart(generateInput(), {
+  selector: '.wrapper3',
+  colors: ['#E65E5E'],
+  width: colWidth
+})
+
+b3.render();
+
+$("#update").click(function(){
   b.render();
-
-  var b2 = new barChart(generateInput(), {
-    selector: '.wrapper2',
-    colors: ['#9686E9'],
-    width: colWidth
-  })
-
   b2.render();
-
-  var b3 = new barChart(generateInput(), {
-    selector: '.wrapper3',
-    colors: ['#E65E5E'],
-    width: colWidth
-  })
-
   b3.render();
-
-  $("#update").click(function(){
-    b.render();
-    b2.render();
-    b3.render();
-  });
+});
 
 
 
