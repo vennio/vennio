@@ -19,7 +19,7 @@
   <button id="update">Update</button>
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="../groupBySkills.js" type="text/javascript"></script>
+  <script src="../SalaryJobBySkill.js" type="text/javascript"></script>
   <script>
 
   var updateData = function(input){
@@ -200,10 +200,10 @@
     return input;
   };
 
-  var output = generateInput('Jobs', 'Skill', 10, groupBySkills);
+  var output = generateInput('Jobs', 'Skill', 10, SalaryJobBySkill);
   console.log(output);
   $("#update").click(function(){
-    updateData(generateInput('AvgSal', 'Skill', 10, groupBySkills));
+    updateData(generateInput('AvgSal', 'Skill', 10, SalaryJobBySkill));
   });
 
   </script>
