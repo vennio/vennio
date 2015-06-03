@@ -3,3 +3,4 @@ data.txt
 .grunt
 bower_components
 build
+.DS_Store
