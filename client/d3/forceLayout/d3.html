@@ -32,7 +32,6 @@ var svg = d3.select("body").append("svg")
     .attr("height", height);
 
 d3.json("miserables.json", function(error, graph) {
-  // d3.laout.
   force
       .nodes(graph.nodes)
       .links(graph.links)

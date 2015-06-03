@@ -107,7 +107,7 @@ app.get('/getjobs', function(req,res) {
 
 //Send all jobs from the table "JobsClean" to the user
 app.get('/viewJobs', function(req, res) {
-  Jobs.find({}, function(err, jobs) {
+  JobsClean.find({}, function(err, jobs) {
     res.send(jobs);
   });
 });
