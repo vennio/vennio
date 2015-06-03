@@ -35,15 +35,10 @@ var barChart = function(data, config) {
     .tickFormat(function(d, i){ return data.categories[i]; })
 };
 
-barChart.prototype.yscale = function(){
-  d3.scale.linear()
-      .domain([0, this.categories.length])
-      .range([0, 70 * this.categories.length]);
-}
-
 barChart.prototype.render = function() {
   var that = this;
-  that.canvas.append('g')
+  console.log(this);
+  var bars = that.canvas.append('g')
     .attr("transform", "translate(0,0)")
     .attr('class','bars')
     .selectAll('rect')
@@ -109,28 +104,36 @@ barChart.prototype.render = function() {
     return input;
   };
 
+  var colWidth = $('.barchart').width();
+
 	var b = new barChart(generateInput(), {
     selector: '.wrapper1',
-    colors: ['#19C999']
+    colors: ['#19C999'],
+    width: colWidth
   });
 
   b.render();
 
   var b2 = new barChart(generateInput(), {
     selector: '.wrapper2',
-    colors: ['#9686E9']
+    colors: ['#9686E9'],
+    width: colWidth
   })
 
   b2.render();
 
   var b3 = new barChart(generateInput(), {
     selector: '.wrapper3',
-    colors: ['#E65E5E']
+    colors: ['#E65E5E'],
+    width: colWidth
   })
 
   b3.render();
 
   $("#update").click(function(){
+    b.render();
+    b2.render();
+    b3.render();
   });
 
 
