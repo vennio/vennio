@@ -1,71 +1,83 @@
- var updateData = function(input, selector){
-    var categories = input.categories;
-    var dollars = input.salaries;
-    var colors = input.colors;
+var barChart = function(data, config) {
+  
+  this.width = config.width || 400;
+  this.height = config.height || 700;
+  this.offset = config.offset || 19;
+  this.colors = config.colors || '#000000';
+  this.selector = config.selector;
 
-    var width = $('.barchart').width();
-    var height = 750;
-    var offset = 19;
+  this.categories = data.categories;
+  this.metrics = data.metrics;
 
-    var xscale = d3.scale.linear()
-      .domain([0,130])
-      .range([0,width]);
+  this.xscale = d3.scale.linear()
+    .domain([0, 130])
+    .range([0, this.width]);
 
-    var yscale = d3.scale.linear()
-      .domain([0,categories.length])
-      // .range([0,480]); // Original
-      .range([0,70*categories.length]);
+  this.yscale = d3.scale.linear()
+    .domain([0, this.categories.length])
+    .range([0, 70 * this.categories.length]);
 
-    var colorScale = d3.scale.quantize()
-      .domain([0,categories.length])
-      .range(colors);
+  this.colorScale = d3.scale.quantize()
+    .domain([0, this.categories.length])
+    .range(colors);
 
-    // Remove previous svg if exists
-    d3.select('svg').remove();
+  this.canvas = d3.select(this.selector)
+    .append('svg')
+    .attr({
+      'width': this.width, 
+      'height': this.height
+    });
 
-    var canvas = d3.select(selector)
-      .append('svg')
-      .attr({'width':width,'height':height});
+  this.yAxis = d3.svg.axis()
+    .orient('right')
+    .scale(this.yscale)
+    .tickSize(0)
+    .tickFormat(function(d, i){ return data.categories[i]; })
+};
 
-    var yAxis = d3.svg.axis()
-      .orient('right')
-      .scale(yscale)
-      .tickSize(0)
-      .tickFormat(function(d,i){ return categories[i]; })
+barChart.prototype.yscale = function(){
+  d3.scale.linear()
+      .domain([0, this.categories.length])
+      .range([0, 70 * this.categories.length]);
+}
 
-    var chart = canvas.append('g')
-      .attr("transform", "translate(0,0)")
-      .attr('class','bars')
-      .selectAll('rect')
-      .data(dollars)
-      .enter()
+barChart.prototype.render = function() {
+  var b = this;
+  b.canvas.append('g')
+    .attr("transform", "translate(0,0)")
+    .attr('class','bars')
+    .selectAll('rect')
+    .data(this.metrics)
+    .enter()
       .append('rect')
       .attr('height',65)
-      .attr({'x':0,'y':function(d,i){ return yscale(i) ; }})
-      .style('fill',function(d,i){ return colorScale(i); })
-      .attr('width',function(d){ return 0; });
+      .attr({
+        'x': 0,
+        'y': function(d, i){ return b.yscale(i); }
+      })
+      .style('fill', function(d, i){ return b.colorScale(i); })
+      .attr('width', function(d){ return 0; });
 
-    var y_xis = canvas.append('g')
-      .attr("transform", "translate(10,-40)")
-      .attr('id','yaxis')
-      .call(yAxis);
+  this.canvas.append('g')
+    .attr("transform", "translate(10,-40)")
+    .attr('id','yaxis')
+    .call(this.yAxis);
 
+  //ANIMATION
+  d3.select("svg").selectAll("rect")
+    .transition()
+    .duration(1000) 
+    .attr("width", function(d) { return b.xscale(d); });
 
-    var transit = d3.select("svg").selectAll("rect")
-      .data(dollars)
-      .transition()
-      .duration(1000) 
-      .attr("width", function(d) {return xscale(d); });
-
-    var transitext = d3.select('.bars')
-      .selectAll('text')
-      .data(dollars)
-      .enter()
+  d3.select('.bars')
+    .selectAll('text')
+    .data(this.metrics)
+    .enter()
       .append('text')
       .attr('text-anchor', 'end')
-      .attr({'x':function(d) {return xscale(d) - 10; },'y':function(d,i){ return yscale(i)+42; }})
+      .attr({'x':function(d) {return b.xscale(d) - 10; },'y':function(d,i){ return b.yscale(i)+42; }})
       .text(function(d){ return "$" + d+"k"; }).style({'fill':'#fff','font-size':'30px'});
-  };
+}
 
   // Skills 
   var frontEndSkills = ['Backbone.js', 'Coffeescript', 'Ember.js', 'HTML', 'CSS', 'Angular.js', 'D3', 'Bootstrap'];
@@ -95,12 +107,28 @@
     var input = {};
     var inputSize = Math.floor(skills.length * Math.random());
     input.categories = skills.slice(0,10);
-    input.salaries = generateSalaries(input.categories.length - 1);
+    input.metrics = generateSalaries(input.categories.length - 1);
     input.colors = colors;
     return input;
   };
 
-	updateData(generateInput(), '.wrapper1');
+	var b = new barChart(generateInput(), {
+    selector: '.wrapper1'
+  })
+
+  b.render();
+
+  var b2 = new barChart(generateInput(), {
+    selector: '.wrapper2'
+  })
+
+  b2.render();
+
+  var b3 = new barChart(generateInput(), {
+    selector: '.wrapper3'
+  })
+
+  b3.render();
 
   $("#update").click(function(){
   });
