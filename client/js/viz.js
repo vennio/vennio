@@ -25,7 +25,7 @@
     var yscale = d3.scale.linear()
             .domain([0,categories.length])
             // .range([0,480]); // Original
-            .range([0,50*categories.length]);
+            .range([0,70*categories.length]);
 
     var colorScale = d3.scale.quantize()
             .domain([0,categories.length])
@@ -34,17 +34,15 @@
     // Remove previous svg if exists
     d3.select('svg').remove();
 
-    var canvas = d3.select('#wrapper')
+    var canvas = d3.select('.wrapper')
             .append('svg')
             .attr({'width':width,'height':height});
 
-    var yAxis = d3.svg.axis();
-      yAxis
+    var yAxis = d3.svg.axis()
         .orient('right')
         .scale(yscale)
         .tickSize(0)
         .tickFormat(function(d,i){ return categories[i]; })
-        .tickValues(d3.range(17));
 
     var chart = canvas.append('g')
               .attr("transform", "translate(0,0)")
@@ -54,12 +52,12 @@
               .enter()
               .append('rect')
               .attr('height',65)
-              .attr({'x':0,'y':function(d,i){ return yscale(i)+ (i * 17) ; }})
+              .attr({'x':0,'y':function(d,i){ return yscale(i) ; }})
               .style('fill',function(d,i){ return colorScale(i); })
               .attr('width',function(d){ return 0; });
 
     var y_xis = canvas.append('g')
-              .attr("transform", "translate(0,0)")
+              .attr("transform", "translate(10,-40)")
               .attr('id','yaxis')
               .call(yAxis);
 
@@ -75,8 +73,9 @@
               .data(dollars)
               .enter()
               .append('text')
-              .attr({'x':function(d) {return xscale(d); },'y':function(d,i){ return yscale(i)+35; }})
-              .text(function(d){ return "$" + d+"k"; }).style({'fill':'#fff','font-size':'14px'});
+              .attr('text-anchor', 'end')
+              .attr({'x':function(d) {return xscale(d) - 10; },'y':function(d,i){ return yscale(i)+42; }})
+              .text(function(d){ return "$" + d+"k"; }).style({'fill':'#fff','font-size':'30px'});
   };
 
   // Skills 
@@ -90,7 +89,7 @@
 
   // var dollars = [213,209,190,179,156,209,190,179,213,209,190,179,156,209,190,190];
 
-  var colors = ['#0000b4','#0082ca','#0094ff','#0d4bcf','#0066AE','#074285','#00187B','#285964','#405F83','#416545','#4D7069','#6E9985','#7EBC89','#0283AF','#79BCBF','#99C19E'];
+  var colors = ['#19C999'];
 
   var generateSalaries = function(n){
     var salaries = [];
@@ -116,3 +115,6 @@
   $("#update").click(function(){
     updateData(generateInput());
   });
+
+
+
