@@ -21,7 +21,7 @@ gulp.task('js', function() {
     .pipe(concat('app.js'))
     .pipe(gulp.dest('build/js'))
     .pipe(rename({suffix: '.min'}))
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(gulp.dest('build/js'))
     
 });
@@ -83,8 +83,8 @@ gulp.task('bs-reload', function () {
 
 gulp.task('default', ['sass', 'css', 'fonts', 'bsync', 'js', 'html', 'img'], function() {
 
-  gulp.watch(['client/js/*.js'], ['jshint','js']);
+  gulp.watch(['client/js/*.js'], ['jshint','js', 'bs-reload']);
   gulp.watch(['client/css/**/*.scss'], ['sass']);
-  gulp.watch(['*.html'], ['html','bs-reload']);
+  gulp.watch(['client/*.html'], ['html','bs-reload']);
 
 });

@@ -62,3 +62,16 @@
     font-style: normal;
 
 }
+
+@font-face {
+    font-family: 'aileronultralight';
+    src: url('aileron-ultralight-webfont.eot');
+    src: url('aileron-ultralight-webfont.eot?#iefix') format('embedded-opentype'),
+         url('aileron-ultralight-webfont.woff2') format('woff2'),
+         url('aileron-ultralight-webfont.woff') format('woff'),
+         url('aileron-ultralight-webfont.ttf') format('truetype'),
+         url('aileron-ultralight-webfont.svg#aileronultralight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
