@@ -3,7 +3,7 @@ var barChart = function(data, config) {
   this.width = config.width || 400;
   this.height = config.height || 700;
   this.offset = config.offset || 19;
-  this.colors = config.colors || '#000000';
+  this.colors = config.colors || ['#000000'];
   this.selector = config.selector;
 
   this.categories = data.categories;
@@ -19,7 +19,7 @@ var barChart = function(data, config) {
 
   this.colorScale = d3.scale.quantize()
     .domain([0, this.categories.length])
-    .range(colors);
+    .range(this.colors);
 
   this.canvas = d3.select(this.selector)
     .append('svg')
@@ -42,8 +42,8 @@ barChart.prototype.yscale = function(){
 }
 
 barChart.prototype.render = function() {
-  var b = this;
-  b.canvas.append('g')
+  var that = this;
+  that.canvas.append('g')
     .attr("transform", "translate(0,0)")
     .attr('class','bars')
     .selectAll('rect')
@@ -53,9 +53,9 @@ barChart.prototype.render = function() {
       .attr('height',65)
       .attr({
         'x': 0,
-        'y': function(d, i){ return b.yscale(i); }
+        'y': function(d, i){ return that.yscale(i); }
       })
-      .style('fill', function(d, i){ return b.colorScale(i); })
+      .style('fill', function(d, i){ return that.colorScale(i); })
       .attr('width', function(d){ return 0; });
 
   this.canvas.append('g')
@@ -67,7 +67,7 @@ barChart.prototype.render = function() {
   d3.selectAll("svg").selectAll("rect")
     .transition()
     .duration(1000) 
-    .attr("width", function(d) { return b.xscale(d); });
+    .attr("width", function(d) { return that.xscale(d); });
 
   d3.selectAll('.bars')
     .selectAll('text')
@@ -75,7 +75,7 @@ barChart.prototype.render = function() {
     .enter()
       .append('text')
       .attr('text-anchor', 'end')
-      .attr({'x':function(d) {return b.xscale(d) - 10; },'y':function(d,i){ return b.yscale(i)+42; }})
+      .attr({'x':function(d) {return b.xscale(d) - 10; },'y':function(d,i){ return that.yscale(i) + 42; }})
       .text(function(d){ return "$" + d+"k"; }).style({'fill':'#fff','font-size':'30px'});
 }
 
@@ -89,8 +89,6 @@ barChart.prototype.render = function() {
   // var categories= ['','Accessories', 'Audiophile', 'Camera & Photo', 'Cell Phones', 'Computers','eBook Readers','Gadgets','GPS & Navigation','Home Audio','Office Electronics','Portable Audio','Portable Video','Security & Surveillance','Service','Television & Video','Car & Vehicle'];
 
   // var dollars = [213,209,190,179,156,209,190,179,213,209,190,179,156,209,190,190];
-
-  var colors = ['#19C999'];
 
   var generateSalaries = function(n){
     var salaries = [];
@@ -108,24 +106,26 @@ barChart.prototype.render = function() {
     var inputSize = Math.floor(skills.length * Math.random());
     input.categories = skills.slice(0,10);
     input.metrics = generateSalaries(input.categories.length - 1);
-    input.colors = colors;
     return input;
   };
 
 	var b = new barChart(generateInput(), {
-    selector: '.wrapper1'
-  })
+    selector: '.wrapper1',
+    colors: ['#19C999']
+  });
 
   b.render();
 
   var b2 = new barChart(generateInput(), {
-    selector: '.wrapper2'
+    selector: '.wrapper2',
+    colors: ['#9686E9']
   })
 
   b2.render();
 
   var b3 = new barChart(generateInput(), {
-    selector: '.wrapper3'
+    selector: '.wrapper3',
+    colors: ['#E65E5E']
   })
 
   b3.render();
