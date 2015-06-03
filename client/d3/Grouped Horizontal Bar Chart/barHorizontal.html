@@ -19,12 +19,12 @@
   <button id="update">Update</button>
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="../groupBySkills.js" type="text/javascript"></script>>
+  <script src="../groupBySkills.js" type="text/javascript"></script>
   <script>
 
   var updateData = function(input){
     var categories = input.categories;
-    var dollars = input.salaries;
+    var dollars = input.values;
     var colors = input.colors;
 
     var width = 900;
@@ -63,19 +63,19 @@
             .attr({'width':width,'height':height});
 
     // Enable grid by uncomment code below
-    var grids = canvas.append('g')
-              .attr('id','grid')
-              .attr('transform','translate(150,10)')
-              .selectAll('line')
-              .data(grid)
-              .enter()
-              .append('line')
-              .attr({'x1':function(d,i){ return i*30; },
-                 'y1':function(d){ return d.y1; },
-                 'x2':function(d,i){ return i*30; },
-                 'y2':function(d){ return d.y2; },
-              })
-              .style({'stroke':'#adadad','stroke-width':'1px'});
+    // var grids = canvas.append('g')
+    //           .attr('id','grid')
+    //           .attr('transform','translate(150,10)')
+    //           .selectAll('line')
+    //           .data(grid)
+    //           .enter()
+    //           .append('line')
+    //           .attr({'x1':function(d,i){ return i*30; },
+    //              'y1':function(d){ return d.y1; },
+    //              'x2':function(d,i){ return i*30; },
+    //              'y2':function(d){ return d.y2; },
+    //           })
+    //           .style({'stroke':'#adadad','stroke-width':'1px'});
 
     var xAxis = d3.svg.axis();
       xAxis
@@ -153,18 +153,57 @@
   };
   
 
-  var generateInput = function(){
+
+  // Sorting Compare Functions
+  var generateCompareFunction = function(metric){
+    return function(a,b){
+      if (a[metric] > b[metric]){
+        return -1;
+      } else if (a[metric] === b[metric]){
+        return 0; 
+      } else {
+        return 1;
+      }
+    };
+
+  };
+
+
+  /*
+  metric: metric used
+  group: what grouping
+  limit: number of data points visualizing
+  data: returned data from server endpoint
+  */
+  var generateInput = function(metric, group, limit, data){
     var input = {};
-    var inputSize = Math.floor(skills.length * Math.random());
-    input.categories = skills.slice(0,5);
-    input.salaries = generateSalaries(input.categories.length - 1);
+
+    // Sort based on metric
+    var sortedData = data.sort(generateCompareFunction(metric));
+    // Take a subset of data based on the limit
+    var dataLimited = data.slice(0, limit);
+    // categories are the yaxis labels
+    // The leading empty string needs refactor
+    input.categories = [''].concat(
+      dataLimited.map(function(item){
+        return item[group];
+      })
+    );
+
+    input.values = dataLimited.map(function(item){
+      return item[metric];
+    });
+
+    // Changed this based on UI style. Chit Chat Time: what's up Brant? How is your day? 
     input.colors = colors;
+
     return input;
   };
 
-  updateData(generateInput());
+  var output = generateInput('Jobs', 'Skill', 10, groupBySkills);
+  console.log(output);
   $("#update").click(function(){
-    updateData(generateInput());
+    updateData(generateInput('AvgSal', 'Skill', 10, groupBySkills));
   });
 
   </script>
