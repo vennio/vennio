@@ -64,12 +64,12 @@ barChart.prototype.render = function() {
     .call(this.yAxis);
 
   //ANIMATION
-  d3.select("svg").selectAll("rect")
+  d3.selectAll("svg").selectAll("rect")
     .transition()
     .duration(1000) 
     .attr("width", function(d) { return b.xscale(d); });
 
-  d3.select('.bars')
+  d3.selectAll('.bars')
     .selectAll('text')
     .data(this.metrics)
     .enter()
