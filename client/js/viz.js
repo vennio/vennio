@@ -1,70 +1,118 @@
-// 'use strict';
+ var updateData = function(input){
+    var categories = input.categories;
+    var dollars = input.salaries;
+    var colors = input.colors;
 
-// var categories= ['Angular','d3js', 'Something Long',160,160, 156,160,160, 156,160,160, 156,160,160, 156,160,160, 156,160,160, 156,160,160, 156,160,160, 156,160];
+    var width = 900;
+    var height = 750;
+    var offset = 19;
 
-// var dollars = [156,160, 156,160,160, 156,160,160, 156,160,160, 156,160,160, 156,160,160, 156,160,160, 156,160,160, 156,160,160, 156,160];
+    var grid = d3.range(25).map(function(i){
+      return {'x1':0,'y1':0,'x2':0,'y2':480};
+    });
 
-// var margin = {top: 20, right: 0, bottom: 20, left: 0};
-// var width = 1300 - margin.left - margin.right;
-// var height = 37*categories.length - margin.top - margin.bottom;
+    var tickVals = grid.map(function(d,i){
+      if(i>0){ return i*10; }
+      else if(i===0){ return "100";}
+    });
 
-
-// var colors = ['#9686E9','#86E9E4','#E98686'];
-
-// var xscale = d3.scale.linear()
-//     .domain([0,250])
-//     .range([0,1200]);
-
-// var yscale = d3.scale.linear()
-//     .domain([0,categories.length])
-//     .range([0,30*categories.length]);
-
-// var colorScale = d3.scale.quantize()
-//     .domain([0,categories.length])
-//     .range(colors);
-
-// var yAxis = d3.svg.axis()
-//     .orient('left')
-//     .scale(yscale)
-//     .tickSize(0)
-//     .tickFormat(function(d,i){ return categories[i]; })
-//     .tickValues(d3.range(categories.length));
-
-// var svg = d3.select('#wrapper').append('svg')
-//     .attr({'width', width + margin.left + margin.right})
-//     .attr({'height', height + margin.top + margin.bottom})
-//   .append('g')
-//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-// var gy = svg.append('g')
-//     .attr("class", "y axis")
-//     .attr("transform", "translate(0," + width + ")")
-//     .call(yAxis);
-
-// var chart = svg.append('g')
-//           .attr("transform", "translate(20,0)")
-//           .attr('id','bars')
-//           .selectAll('rect')
-//           .data(dollars)
-//           .enter()
-//           .append('rect')
-//           .attr('height',28)
-//           .attr({'x':0,'y':function(d,i){ return yscale(i)+30; }})
-//           .style('fill',function(d,i){ return colorScale(i); })
-//           .attr('width',function(d){ return 0; });
+    // 
+    var xscale = d3.scale.linear()
+            .domain([70,130])
+            .range([0,722]);
 
 
-// var transit = d3.select("svg").selectAll("rect")
-//             .data(dollars)
-//             .transition()
-//             .duration(1000) 
-//             .attr("width", function(d) {return xscale(d); });
+    var yscale = d3.scale.linear()
+            .domain([0,categories.length])
+            // .range([0,480]); // Original
+            .range([0,50*categories.length]);
 
-// var transitext = d3.select('#bars')
-//           .selectAll('text')
-//           .data(dollars)
-//           .enter()
-//           .append('text')
-//           .attr({'x':function(d) {return xscale(d)-40; },'y':function(d,i){ return yscale(i); }})
-//           .text(function(d){ return d+"$"; }).style({'fill':'#fff','font-size':'14px'});
+    var colorScale = d3.scale.quantize()
+            .domain([0,categories.length])
+            .range(colors);
 
+    // Remove previous svg if exists
+    d3.select('svg').remove();
+
+    var canvas = d3.select('#wrapper')
+            .append('svg')
+            .attr({'width':width,'height':height});
+
+    var yAxis = d3.svg.axis();
+      yAxis
+        .orient('right')
+        .scale(yscale)
+        .tickSize(0)
+        .tickFormat(function(d,i){ return categories[i]; })
+        .tickValues(d3.range(17));
+
+    var chart = canvas.append('g')
+              .attr("transform", "translate(0,0)")
+              .attr('id','bars')
+              .selectAll('rect')
+              .data(dollars)
+              .enter()
+              .append('rect')
+              .attr('height',65)
+              .attr({'x':0,'y':function(d,i){ return yscale(i)+ (i * 17) ; }})
+              .style('fill',function(d,i){ return colorScale(i); })
+              .attr('width',function(d){ return 0; });
+
+    var y_xis = canvas.append('g')
+              .attr("transform", "translate(0,0)")
+              .attr('id','yaxis')
+              .call(yAxis);
+
+
+    var transit = d3.select("svg").selectAll("rect")
+                .data(dollars)
+                .transition()
+                .duration(1000) 
+                .attr("width", function(d) {return xscale(d); });
+
+    var transitext = d3.select('#bars')
+              .selectAll('text')
+              .data(dollars)
+              .enter()
+              .append('text')
+              .attr({'x':function(d) {return xscale(d); },'y':function(d,i){ return yscale(i)+35; }})
+              .text(function(d){ return "$" + d+"k"; }).style({'fill':'#fff','font-size':'14px'});
+  };
+
+  // Skills 
+  var frontEndSkills = ['Backbone.js', 'Coffeescript', 'Ember.js', 'HTML', 'CSS', 'Angular.js', 'D3', 'Bootstrap'];
+  var backEndSkills = ['Node.js', 'Express.js', 'MySQL', 'MongoDB', 'PostgreSQL', 'Django', 'Ruby on Rails'];
+  var center = ['javascript'];
+  var skills = [''].concat(frontEndSkills,backEndSkills,center);
+  
+  // Original dataset
+  // var categories= ['','Accessories', 'Audiophile', 'Camera & Photo', 'Cell Phones', 'Computers','eBook Readers','Gadgets','GPS & Navigation','Home Audio','Office Electronics','Portable Audio','Portable Video','Security & Surveillance','Service','Television & Video','Car & Vehicle'];
+
+  // var dollars = [213,209,190,179,156,209,190,179,213,209,190,179,156,209,190,190];
+
+  var colors = ['#0000b4','#0082ca','#0094ff','#0d4bcf','#0066AE','#074285','#00187B','#285964','#405F83','#416545','#4D7069','#6E9985','#7EBC89','#0283AF','#79BCBF','#99C19E'];
+
+  var generateSalaries = function(n){
+    var salaries = [];
+    for (var i = 0; i < n; i++){
+      var base = 90;
+      var salary = Math.floor(Math.random() * 20) + base;
+      salaries.push(salary);
+    }
+    return salaries;
+  };
+  
+
+  var generateInput = function(){
+    var input = {};
+    var inputSize = Math.floor(skills.length * Math.random());
+    input.categories = skills.slice(0,10);
+    input.salaries = generateSalaries(input.categories.length - 1);
+    input.colors = colors;
+    return input;
+  };
+
+  updateData(generateInput());
+  $("#update").click(function(){
+    updateData(generateInput());
+  });
