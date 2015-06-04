@@ -8,10 +8,10 @@ var barChart = function(data, config) {
 
   this.categories = data.categories;
   this.metrics = data.metrics;
-  console.log(config.xmax)
+  
   this.xscale = d3.scale.linear()
-    .domain([0, config.xmax])
-    .range([0, this.width]);
+    .domain([data.metrics[9], data.metrics[0]])
+    .range([300, this.width]);
 
   this.yscale = d3.scale.linear()
     .domain([0, this.categories.length])
@@ -33,11 +33,14 @@ var barChart = function(data, config) {
     .scale(this.yscale)
     .tickSize(0)
     .tickFormat(function(d, i){ return data.categories[i]; })
+
+  return this;
 };
 
 barChart.prototype.render = function() {
   var that = this;
   this.canvas.selectAll('g').remove();
+
   var bars = this.canvas.append('g')
     .attr("transform", "translate(0,0)")
     .attr('class','bars')
@@ -59,10 +62,10 @@ barChart.prototype.render = function() {
     .call(this.yAxis);
 
   //ANIMATION
-  d3.selectAll("svg").selectAll("rect")
+  d3.select(this.selector).selectAll("rect")
     .transition()
     .duration(1000) 
-    .attr("width", function(d) { return that.xscale(d); });
+    .attr({"width": function(d) { return that.xscale(d); }});
 
   d3.selectAll('.bars')
     .selectAll('text')
@@ -123,8 +126,7 @@ var data1 = generateInput('Jobs', 'Skill', 10, SalaryJobBySkill);
 var b = new barChart(data1, {
   selector: '.wrapper1',
   colors: ['#19C999'],
-  width: colWidth,
-  xmax: data1.metrics[0]
+  width: colWidth
 });
 
 b.render();
@@ -133,27 +135,30 @@ var data2 = generateInput('Startups', 'Skills', 10, CompanyBySkill)
 var b2 = new barChart(data2, {
   selector: '.wrapper2',
   colors: ['#9686E9'],
-  width: colWidth,
-  xmax: data2.metrics[0]
+  width: colWidth
 })
 
 b2.render();
 
 var data3 = generateInput('AvgSal', 'Skill', 10, SalaryJobBySkill);
+
+data3.metrics = data3.metrics.map(function(m){
+  return Math.round(m);
+});
+
 var b3 = new barChart(data3, {
   selector: '.wrapper3',
   colors: ['#E65E5E'],
-  width: colWidth,
-  xmax: data3.metrics[0]
+  width: colWidth
 })
 
 b3.render();
 
-// $("#update").click(function(){
-//   b.render();
-//   b2.render();
-//   b3.render();
-// });
+$("#update").click(function(){
+  b.render();
+  b2.render();
+  b3.render();
+});
 
 
 
