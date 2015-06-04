@@ -8,9 +8,9 @@ var barChart = function(data, config) {
 
   this.categories = data.categories;
   this.metrics = data.metrics;
-
+  console.log(config.xmax)
   this.xscale = d3.scale.linear()
-    .domain([0, 130])
+    .domain([0, config.xmax])
     .range([0, this.width]);
 
   this.yscale = d3.scale.linear()
@@ -37,8 +37,8 @@ var barChart = function(data, config) {
 
 barChart.prototype.render = function() {
   var that = this;
-  that.canvas.selectAll('g').remove();
-  var bars = that.canvas.append('g')
+  this.canvas.selectAll('g').remove();
+  var bars = this.canvas.append('g')
     .attr("transform", "translate(0,0)")
     .attr('class','bars')
     .selectAll('rect')
@@ -70,64 +70,90 @@ barChart.prototype.render = function() {
     .enter()
       .append('text')
       .attr('text-anchor', 'end')
-      .attr({'x':function(d) {return b.xscale(d) - 10; },'y':function(d,i){ return that.yscale(i) + 42; }})
-      .text(function(d){ return "$" + d+"k"; }).style({'fill':'#fff','font-size':'30px'});
+      .attr({'x':function(d) {return that.xscale(d) - 10; },'y':function(d,i){ return that.yscale(i) + 42; }})
+      .text(function(d){ return d; }).style({'fill':'#fff','font-size':'30px'});
 }
 
-var frontEndSkills = ['Backbone.js', 'Coffeescript', 'Ember.js', 'HTML', 'CSS', 'Angular.js', 'D3', 'Bootstrap'];
-var backEndSkills = ['Node.js', 'Express.js', 'MySQL', 'MongoDB', 'PostgreSQL', 'Django', 'Ruby on Rails'];
-var center = ['javascript'];
-var skills = [''].concat(frontEndSkills,backEndSkills,center);
+var generateCompareFunction = function(metric){
+  return function(a,b){
+    if (a[metric] > b[metric]){
+      return -1;
+    } else if (a[metric] === b[metric]){
+      return 0; 
+    } else {
+      return 1;
+    }
+  };
 
-var generateSalaries = function(n){
-  var salaries = [];
-  for (var i = 0; i < n; i++){
-    var base = 90;
-    var salary = Math.floor(Math.random() * 20) + base;
-    salaries.push(salary);
-  }
-  return salaries;
 };
 
-var generateInput = function(){
+
+/*
+metric: metric used
+group: what grouping
+limit: number of data points visualizing
+data: returned data from server endpoint
+*/
+var generateInput = function(metric, group, limit, data){
   var input = {};
-  var inputSize = Math.floor(skills.length * Math.random());
-  input.categories = skills.slice(0,10);
-  input.metrics = generateSalaries(input.categories.length - 1);
+
+  // Sort based on metric
+  var sortedData = data.sort(generateCompareFunction(metric));
+  // Take a subset of data based on the limit
+  var dataLimited = data.slice(0, limit);
+  // categories are the yaxis labels
+  // The leading empty string needs refactor
+  input.categories = [''].concat(
+    dataLimited.map(function(item){
+      return item[group];
+    })
+  );
+
+  input.metrics = dataLimited.map(function(item){
+    return item[metric];
+  });
+
+  // Changed this based on UI style. Chit Chat Time: what's up Brant? How is your day? 
   return input;
 };
 
 var colWidth = $('.barchart').width();
 
-var b = new barChart(generateInput(), {
+var data1 = generateInput('Jobs', 'Skill', 10, SalaryJobBySkill);
+var b = new barChart(data1, {
   selector: '.wrapper1',
   colors: ['#19C999'],
-  width: colWidth
+  width: colWidth,
+  xmax: data1.metrics[0]
 });
 
 b.render();
 
-var b2 = new barChart(generateInput(), {
+var data2 = generateInput('Startups', 'Skills', 10, CompanyBySkill)
+var b2 = new barChart(data2, {
   selector: '.wrapper2',
   colors: ['#9686E9'],
-  width: colWidth
+  width: colWidth,
+  xmax: data2.metrics[0]
 })
 
 b2.render();
 
-var b3 = new barChart(generateInput(), {
+var data3 = generateInput('AvgSal', 'Skill', 10, SalaryJobBySkill);
+var b3 = new barChart(data3, {
   selector: '.wrapper3',
   colors: ['#E65E5E'],
-  width: colWidth
+  width: colWidth,
+  xmax: data3.metrics[0]
 })
 
 b3.render();
 
-$("#update").click(function(){
-  b.render();
-  b2.render();
-  b3.render();
-});
+// $("#update").click(function(){
+//   b.render();
+//   b2.render();
+//   b3.render();
+// });
 
 
 
