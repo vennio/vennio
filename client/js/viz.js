@@ -57,7 +57,11 @@ barChart.prototype.render = function() {
       .attr('width', function(d){ return 0; });
 
   this.canvas.append('g')
+    .style('opacity', '0')
+    .transition()
+    .duration(1000)
     .attr("transform", "translate(10,-40)")
+    .style('opacity', '1')
     .attr('id','yaxis')
     .call(this.yAxis);
 
@@ -73,6 +77,9 @@ barChart.prototype.render = function() {
     .enter()
       .append('text')
       .attr('text-anchor', 'end')
+      .attr('x', 0)
+      .transition()
+      .duration(1000)
       .attr({'x':function(d) {return that.xscale(d) - 10; },'y':function(d,i){ return that.yscale(i) + 42; }})
       .text(function(d){ return d; }).style({'fill':'#fff','font-size':'30px'});
 }
