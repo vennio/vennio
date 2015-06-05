@@ -129,37 +129,49 @@ var generateInput = function(metric, group, limit, data){
 
 var colWidth = $('.barchart').width();
 
-var data1 = generateInput('Jobs', 'Skill', 10, SalaryJobBySkill);
-var b = new barChart(data1, {
-  selector: '.wrapper1',
-  colors: ['#19C999'],
-  width: colWidth
+
+// Server configuration
+var apiEndpoint = 'http://10.8.31.3:9000/';
+
+// D3 configuration
+var numOfDatapoints = 10;
+
+$.get(apiEndpoint + 'SalaryJobBySkill', function(data,status){
+  var data1 = generateInput('Jobs', 'Skill', numOfDatapoints, data);
+  var b = new barChart(data1, {
+    selector: '.wrapper1',
+    colors: ['#19C999'],
+    width: colWidth
+  });
+
+  b.render();
+  
+  var data3 = generateInput('AvgSal', 'Skill', numOfDatapoints, data);
+
+  data3.metrics = data3.metrics.map(function(m){
+    return Math.round(m);
+  });
+
+  var b3 = new barChart(data3, {
+    selector: '.wrapper3',
+    colors: ['#E65E5E'],
+    width: colWidth
+  })
+
+  b3.render();
 });
 
-b.render();
+$.get(apiEndpoint + 'CompanyBySkill', function(data, status){
+  var data2 = generateInput('Startups', 'Skills', numOfDatapoints, data)
+  var b2 = new barChart(data2, {
+    selector: '.wrapper2',
+    colors: ['#9686E9'],
+    width: colWidth
+  })
 
-var data2 = generateInput('Startups', 'Skills', 10, CompanyBySkill)
-var b2 = new barChart(data2, {
-  selector: '.wrapper2',
-  colors: ['#9686E9'],
-  width: colWidth
+  b2.render();
 })
 
-b2.render();
-
-var data3 = generateInput('AvgSal', 'Skill', 10, SalaryJobBySkill);
-
-data3.metrics = data3.metrics.map(function(m){
-  return Math.round(m);
-});
-
-var b3 = new barChart(data3, {
-  selector: '.wrapper3',
-  colors: ['#E65E5E'],
-  width: colWidth
-})
-
-b3.render();
 
 $("#update").click(function(){
   b.render();
