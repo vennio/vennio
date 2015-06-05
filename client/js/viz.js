@@ -130,7 +130,7 @@ var generateInput = function(metric, group, limit, data) {
   return input;
 };
 
-var colWidth = $('.barchart').width();
+var colWidth = $('.BarChart').width();
 
 // Server configuration
 var apiEndpoint = 'http://10.8.31.3:9000/';
@@ -138,17 +138,17 @@ var apiEndpoint = 'http://10.8.31.3:9000/';
 // D3 configuration
 var numOfDatapoints = 10;
 
-$.get(apiEndpoint + 'SalaryJobBySkill', function(data,status){
-  var data1 = generateInput('Jobs', 'Skill', numOfDatapoints, data);
-  var b = new BarChart(data1, {
-    selector: '.wrapper1',
-    colors: ['#19C999'],
-    width: colWidth
-  });
+var jobConfig = {
+  selector: '.wrapper1',
+  colors: ['#19C999'],
+  width: colWidth
+};
 
-  b.render();
-
-  var data3 = generateInput('AvgSal', 'Skill', numOfDatapoints, data);
+var companyConfig = {
+  selector: '.wrapper2',
+  colors: ['#9686E9'],
+  width: colWidth
+};
 
 var salaryConfig = {
   selector: '.wrapper3',
@@ -164,7 +164,7 @@ var createSalaryJobCharts = function(endpoint){
   $.get(apiEndpoint + endpoint, function(data,status){
     if (status === 'success'){
       var jobData = generateInput('Jobs', 'Skill', numOfDatapoints, data);
-      var jobChart = new barChart(jobData, jobConfig);
+      var jobChart = new BarChart(jobData, jobConfig);
 
       jobChart.render();
 
@@ -174,7 +174,7 @@ var createSalaryJobCharts = function(endpoint){
         return Math.round(m);
       });
 
-      var salaryChart = new barChart(salaryData, salaryConfig)
+      var salaryChart = new BarChart(salaryData, salaryConfig)
 
       salaryChart.render();
     }
@@ -185,7 +185,7 @@ var createCompanyChart = function(endpoint){
   $.get(apiEndpoint + endpoint, function(data, status){
     if (status === 'success'){
       var companyData = generateInput('Startups', 'Skills', numOfDatapoints, data)
-      var companyChart = new barChart(companyData, companyConfig);
+      var companyChart = new BarChart(companyData, companyConfig);
 
       companyChart.render();
     }
