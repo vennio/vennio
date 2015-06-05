@@ -157,29 +157,16 @@ var salaryConfig = {
 // Location Filter library Static 
 var locationsFilterLibarary = ["san_francisco", "new_york,_ny", "bangalore", "london", "los_angeles", "boston", "new_delhi", "mumbai", "palo_alto", "toronto", "washington,_dc", "chicago", "mountain_view", "berlin", "seattle", "gurgaon", "austin", "silicon_valley", "amsterdam", "singapore", "vancouver", "cambridge,_ma", "montreal", "san_mateo", "hyderabad", "paris", "san_diego", "santa_monica", "redwood_city", "atlanta", "india", "sunnyvale", "hong_kong", "united_states", "san_jose", "philadelphia", "oakland", "san_francisco_bay_area", "menlo_park", "sydney", "pune", "remote", "barcelona", "denver", "united_kingdom", "dallas", "noida", "boulder", "santa_clara,_ca", "berkeley", "earth", "brooklyn", "miami", "istanbul", "houston", "munich", "tel_aviv_yafo", "new_york", "melbourne", "beijing", "cincinnati", "florida", "detroit", "baltimore", "phoenix", "madrid", "pittsburgh", "las_vegas", "durham", "irvine", "santa_barbara", "dubai", "europe", "anywhere", "salt_lake_city", "bangkok", "portland", "pasadena,_ca", "newport_beach", "hamburg", "madras", "stockholm", "los_altos", "raleigh", "orange_county"];
 
-// var generateLocationsFilterLibrary = function(endpoint, library){
-//   $.get(apiEndpoint + endpoint, function(data, status){
-//     library = data.map(function(item){
-//       return item['Location'];
-//     });
-//     console.log('library:', library);
-//   });
-// };
-
-// var locationFilterLibrary = generateLocationsFilterLibrary('SalaryJobByLocation');
-
-
-
 // Initial load overall without any filters
-var createSalaryJobCharts = function(endpoint){
+var createSalaryJobCharts = function(endpoint, group){
   $.get(apiEndpoint + endpoint, function(data,status){
     if (status === 'success'){
-      var jobData = generateInput('Jobs', 'Skill', numOfDatapoints, data);
+      var jobData = generateInput('Jobs', group, numOfDatapoints, data);
       var jobChart = new barChart(jobData, jobConfig);
 
       jobChart.render();
       
-      var salaryData = generateInput('AvgSal', 'Skill', numOfDatapoints, data);
+      var salaryData = generateInput('AvgSal', group, numOfDatapoints, data);
 
       salaryData.metrics = salaryData.metrics.map(function(m){
         return Math.round(m);
@@ -192,10 +179,10 @@ var createSalaryJobCharts = function(endpoint){
   });  
 };
 
-var createCompanyChart = function(endpoint){
+var createCompanyChart = function(endpoint, group){
   $.get(apiEndpoint + endpoint, function(data, status){
     if (status === 'success'){
-      var companyData = generateInput('Startups', 'Skills', numOfDatapoints, data)
+      var companyData = generateInput('Startups', group, numOfDatapoints, data)
       var companyChart = new barChart(companyData, companyConfig);
 
       companyChart.render();
@@ -203,11 +190,33 @@ var createCompanyChart = function(endpoint){
   });
 };
 
+/*For Skill Report*/
 
-// createSalaryJobCharts('SalaryJobBySkill');
-// createCompanyChart('CompanyBySkill');
-createSalaryJobCharts('FilterJobSalaryBySkill/san_francisco|hardware_engineer');
-createCompanyChart('FilterCompanyBySkill/san_francisco|hardware_engineer');
+// Call these two functions to populate the overall charts upon page load
+createSalaryJobCharts('SalaryJobBySkill', 'Skill');
+createCompanyChart('CompanyBySkill', 'Skills');
+
+// Given location and role filters, construct the endpoint
+// such as: 'FilterJobSalaryBySkill' + '/' + location + '|' + role 
+// such as: 'FilterCompanyBySkill' + '/' + location + '|' + role 
+
+// createSalaryJobCharts('FilterJobSalaryBySkill/san_francisco|hardware_engineer', 'Skill');
+// createCompanyChart('FilterCompanyBySkill/san_francisco|hardware_engineer', 'Skills');
+
+
+/*For Location Report*/
+
+// Call these two functions to populate the overall charts upon page load
+// createSalaryJobCharts('SalaryJobByLocation', 'Location');
+// createCompanyChart('CompanyByLocation', 'Locations');
+
+// Given skill and role filters, construct the endpoint
+// such as: 'FilterJobSalaryByLocation' + '/' + skill + '|' + role 
+// such as: 'FilterCompanyByLocation' + '/' + skill + '|' + role 
+
+// createSalaryJobCharts('FilterJobSalaryByLocation/javascript|developer', 'Location');
+// createCompanyChart('FilterCompanyByLocation/javascript|developer', 'Locations');
+
 
 
 
