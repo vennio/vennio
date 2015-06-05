@@ -63,10 +63,11 @@ BarChart.prototype.render = function() {
     .attr('transform', 'translate(10,-40)')
     .style('opacity', '1')
     .attr('id', 'yaxis')
+    .style({'fill':'#fff', 'font-size':'22px'})
     .call(this.yAxis);
 
   //ANIMATION
-  d3.select(this.selector).selectAll("rect")
+  d3.select(this.selector).selectAll('rect')
     .transition()
     .duration(1000)
     .attr({width: function(d) { return _this.xscale(d); }});
@@ -81,7 +82,7 @@ BarChart.prototype.render = function() {
       .transition()
       .duration(1000)
       .attr({x:function(d) {return _this.xscale(d) - 10; }, y:function(d, i) { return _this.yscale(i) + 42; }})
-      .text(function(d) { return d; }).style({'fill':'#fff', 'font-size':'30px'});
+      .text(function(d) { return d; }).style({'fill':'#fff', 'font-size':'40px'});
 }
 
 var generateCompareFunction = function(metric) {
@@ -108,10 +109,12 @@ var generateInput = function(metric, group, limit, data) {
 
   // Sort based on metric
   var sortedData = data.sort(generateCompareFunction(metric));
+
   // Take a subset of data based on the limit
   var dataLimited = data.slice(0, limit);
+
   // categories are the yaxis labels
-  // The leading empty string needs refactor
+  //TODO: The leading empty string needs refactor
   input.categories = [''].concat(
     dataLimited.map(function(item) {
       return item[group];
