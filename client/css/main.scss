@@ -7,14 +7,14 @@ body {
 }
 
 .bg {
-  background: url('../img/bg.jpg') no-repeat 50% 50% fixed; 
+  background: url('../img/bg.jpg') no-repeat 50% 50% fixed;
   background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   -webkit-background-size: cover;
 }
 
-.nav { 
+.nav {
   background: rgba(0, 0, 0, 0.2);
   color: #fff;
   padding: 20px 0;
@@ -87,14 +87,19 @@ body {
   }
 }
 
-.filters a {
+.filters {
+  display: block;
+  float: right;
+  width: 200px
+}
+
+.filters > a {
   font-size: 14px;
   text-transform: uppercase;
   padding:10px;
   color: #fff;
   text-decoration: none;
   background: #222222;
-  float: right;
   margin-left: 10px;
 
   &:hover {
@@ -102,9 +107,31 @@ body {
   }
 }
 
+.filter-list {
+  position: absolute;
+  display: none;
+  width: 220px;
+  background: #222;
+  margin: 5px 10px;
+  padding-top: 20px;
+
+  ul {
+    list-style-type: none;
+    margin: 0 auto;
+    width: 200px;
+    a {
+        text-decoration: none;
+        font-size: 14px;
+        padding: 5px;
+        &:hover {
+          background: #ccc;
+        }
+      }
+  }
+}
 
 text {
   fill: #fff;
   letter-spacing: 1px;
-  
+
 }
