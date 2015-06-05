@@ -1,14 +1,29 @@
-$(function(){
-  $('.filter-button').on('click', function(e) {
-    $(this).next().toggle();
-  });
+var data = [
+  'Full-Stack',
+  'No-Stack',
+  'What-Stack',
+  'Cool-Stack',
+  'Whatver-Stack',
+  'Fsdf',
+  'fdfsdf'
+];
 
-  $(document).mouseup(function(e) {
-    var container = $('.filter-list');
+var finalData = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.whitespace,
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  local: data
+});
 
-    if (!container.is(e.target) && container.has(e.target).length === 0) {
-      container.hide();
-    }
+$(function() {
+
+  $('.typeahead').typeahead({
+    hint: true,
+    highlight: true,
+    minLength: 1
+  },
+  {
+    name: 'roles',
+    source: finalData
   });
 
 });

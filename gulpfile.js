@@ -17,6 +17,7 @@ gulp.task('js', function() {
   return gulp.src([
     'client/bower_components/d3/d3.js',
     'client/bower_components/jquery/dist/jquery.js',
+    'client/bower_components/typeahead.js/dist/typeahead.bundle.js',
     'client/js/*.js'
     ])
     .pipe(concat('app.js'))
@@ -24,7 +25,7 @@ gulp.task('js', function() {
     .pipe(rename({suffix: '.min'}))
     // .pipe(uglify())
     .pipe(gulp.dest('build/js'))
-    
+
 });
 
 gulp.task('jshint', function() {
