@@ -14,7 +14,7 @@ var currencyMultipliers = {"CAD":0.80,"USD":1,"INR":0.016,"EUR":1.09,"CNY":0.16,
 /******************** Sequelize and MySQL Integration with Table Schemas ***************************/
 
 var sequelize = new Sequelize('vennio', 'root', null, {
-  host		: 	'localhost',
+  host		: 	CLEARDB_DATABASE_URL || 'localhost',
   dialect	: 	'mysql',
   port		: 	'3306',
   logging	: 	console.log,

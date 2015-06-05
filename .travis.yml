@@ -1,5 +1,11 @@
 language: node_js
 node_js:
-  - "0.10"
-  - "0.8"
-  - "0.6"
+- '0.10'
+- '0.8'
+- '0.6'
+deploy:
+  provider: heroku
+  api_key:
+    secure: kXfAHniaBGrLGbFtZExAOIIYu9IoCo9eS2rLTYNAH5RcoESWqKUNofRExO44m0ykuUIPzVrRfKnZ0Wz6EdiKYkPE5ouBQK+QI6NEz5yucZQPux/FYogPOHw2DzAoPvX7eQ+wscI4zZ9I4heZv3qxw+5uEYJEu6pAuFo2mBMvYnACIE7hGODmXmLo2dMiMRLYQitpm2uKMU2Y08dZZoGfPyWMj75Hkuz7xrocL8u1d7vlYEBH7atrHq3Phz0dA0rDp9umW5ooiRdbjvSRlnb7nShIbn7x+RO2EsYgiOSBcZbUTEozcp1atXtBXeIG7WS9pLPVM+bZMmh3UPA2dsKbpnbNughD5TjkR3EXMeG3intQCr3disxL4UhNs+628BngmfsbsYFpZdNigXQ5vhmr1akCKfzyDHBnpl/Rvvoq1v7Gx1Nv0kDcD4GS3j8FFaxiQ8L9+QtAqsKO2/bdBB23b8PfLGKEsGPqX/M1RJcZnvK4pM3UVpab4fH7n1uPi2HIrgUYMVYgpkUA4c+jB29GlJl7AbwyOKs0iahsVw8TVIZn79nqjXt806utM9InpheCXEgC0+4Yxk6Vg78V+R7jtlm9NZSi35Sf6RYJClKuXk7w+KckD+W0SwTrB5SRVPHmWmqNjP5v9rXDyJr665m4TmSDitTAuQ9eQNhObPzGSac=
+  app: vennio
+  run: "node server/server.js"
