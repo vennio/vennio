@@ -87,30 +87,19 @@ body {
   }
 }
 
-.filters {
-  display: block;
-  float: right;
-  width: 200px;
-  margin-top: 10px;
-}
-
 .filter {
   position: relative;
   display: inline-block;
 }
 
-.filter a {
-  font-size: 14px;
+.filters {
+  float: right;
+  font-size: 12px;
   text-transform: uppercase;
-  padding:10px;
   color: #fff;
   text-decoration: none;
-  background: #222222;
   margin-left: 10px;
 
-  &:hover {
-    background: #333;
-  }
 }
 
 .filter-list {
@@ -140,4 +129,26 @@ text {
   fill: #fff;
   letter-spacing: 1px;
 
+}
+
+//Styles for TT-Menu
+.typeahead {
+  background: #333 !important;
+  font-size: 14px;
+  text-transform: uppercase;
+  border:1px solid #666 !important;
+  border-radius: 0 !important;
+}
+
+.tt-menu {
+  width:200px;
+  background: #333;
+}
+
+.tt-selectable {
+  cursor: pointer;
+  padding: 10px;
+  &:hover {
+    background: #999;
+  }
 }
