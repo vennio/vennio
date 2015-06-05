@@ -3,7 +3,9 @@ var Sequelize = require('sequelize');
 var express = require('express');
 // middleware for dynamically or statically enabling CORS in express/connect applications
 var cors = require('cors');
-
+var mysql = require('mysql');
+var fs = require('fs')
+var path = require('path');
 var app = express();
 
 // Enable all cors request
@@ -14,7 +16,7 @@ var currencyMultipliers = {"CAD":0.80,"USD":1,"INR":0.016,"EUR":1.09,"CNY":0.16,
 /******************** Sequelize and MySQL Integration with Table Schemas ***************************/
 
 var sequelize = new Sequelize('vennio', 'root', null, {
-  host		: 	CLEARDB_DATABASE_URL || 'localhost',
+  host		: 	process.env.DATABASE_URL || 'localhost',
   dialect	: 	'mysql',
   port		: 	'3306',
   logging	: 	console.log,
@@ -123,6 +125,20 @@ Job.belongsToMany(Startup, {
 
 
 /******************** Endpoint Configuration ***************************/
+
+//Static files
+app.use(express.static(__dirname + '/../build'));
+
+
+//Default front page
+app.get('/', function(req,res) {
+  fs.readFile(__dirname+'/../build/index.html', function (err, data) {
+    if (err) throw err;
+    res.writeHeader(200, {"Content-Type": "text/html"});
+    res.write(data);
+    res.end();
+  });
+});
 
 
 // Group Average Salary and Job Count by Location
@@ -415,7 +431,7 @@ app.get('/FilterCompanyBySkill/:locAndRole', function(req, res) {
 
 
 /******************** Start Server ********************/
-var server = app.listen(9000, function () {
+var server = app.listen(process.env.PORT || 9000, function () {
 
   var host = server.address().address;
   var port = server.address().port;
