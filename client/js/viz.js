@@ -10,7 +10,7 @@ var barChart = function(data, config) {
   this.metrics = data.metrics;
   
   this.xscale = d3.scale.linear()
-    .domain([data.metrics[9], data.metrics[0]])
+    .domain([data.metrics.slice(-1).pop(), data.metrics[0]])
     .range([300, this.width]);
 
   this.yscale = d3.scale.linear()
