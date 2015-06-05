@@ -90,10 +90,16 @@ body {
 .filters {
   display: block;
   float: right;
-  width: 200px
+  width: 200px;
+  margin-top: 10px;
 }
 
-.filters > a {
+.filter {
+  position: relative;
+  display: inline-block;
+}
+
+.filter a {
   font-size: 14px;
   text-transform: uppercase;
   padding:10px;
@@ -121,7 +127,7 @@ body {
     width: 200px;
     a {
         text-decoration: none;
-        font-size: 14px;
+        font-size: 13px;
         padding: 5px;
         &:hover {
           background: #ccc;
