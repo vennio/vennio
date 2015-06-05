@@ -136,41 +136,79 @@ var apiEndpoint = 'http://10.8.31.3:9000/';
 // D3 configuration
 var numOfDatapoints = 10;
 
-$.get(apiEndpoint + 'SalaryJobBySkill', function(data,status){
-  var data1 = generateInput('Jobs', 'Skill', numOfDatapoints, data);
-  var b = new barChart(data1, {
-    selector: '.wrapper1',
-    colors: ['#19C999'],
-    width: colWidth
+var jobConfig = {
+  selector: '.wrapper1',
+  colors: ['#19C999'],
+  width: colWidth
+};
+
+var companyConfig = {
+  selector: '.wrapper2',
+  colors: ['#9686E9'],
+  width: colWidth
+};
+
+var salaryConfig = {
+  selector: '.wrapper3',
+  colors: ['#E65E5E'],
+  width: colWidth
+};
+
+// Location Filter library Static 
+var locationsFilterLibarary = ["san_francisco", "new_york,_ny", "bangalore", "london", "los_angeles", "boston", "new_delhi", "mumbai", "palo_alto", "toronto", "washington,_dc", "chicago", "mountain_view", "berlin", "seattle", "gurgaon", "austin", "silicon_valley", "amsterdam", "singapore", "vancouver", "cambridge,_ma", "montreal", "san_mateo", "hyderabad", "paris", "san_diego", "santa_monica", "redwood_city", "atlanta", "india", "sunnyvale", "hong_kong", "united_states", "san_jose", "philadelphia", "oakland", "san_francisco_bay_area", "menlo_park", "sydney", "pune", "remote", "barcelona", "denver", "united_kingdom", "dallas", "noida", "boulder", "santa_clara,_ca", "berkeley", "earth", "brooklyn", "miami", "istanbul", "houston", "munich", "tel_aviv_yafo", "new_york", "melbourne", "beijing", "cincinnati", "florida", "detroit", "baltimore", "phoenix", "madrid", "pittsburgh", "las_vegas", "durham", "irvine", "santa_barbara", "dubai", "europe", "anywhere", "salt_lake_city", "bangkok", "portland", "pasadena,_ca", "newport_beach", "hamburg", "madras", "stockholm", "los_altos", "raleigh", "orange_county"];
+
+// var generateLocationsFilterLibrary = function(endpoint, library){
+//   $.get(apiEndpoint + endpoint, function(data, status){
+//     library = data.map(function(item){
+//       return item['Location'];
+//     });
+//     console.log('library:', library);
+//   });
+// };
+
+// var locationFilterLibrary = generateLocationsFilterLibrary('SalaryJobByLocation');
+
+
+
+// Initial load overall without any filters
+var createSalaryJobCharts = function(endpoint){
+  $.get(apiEndpoint + endpoint, function(data,status){
+    if (status === 'success'){
+      var jobData = generateInput('Jobs', 'Skill', numOfDatapoints, data);
+      var jobChart = new barChart(jobData, jobConfig);
+
+      jobChart.render();
+      
+      var salaryData = generateInput('AvgSal', 'Skill', numOfDatapoints, data);
+
+      salaryData.metrics = salaryData.metrics.map(function(m){
+        return Math.round(m);
+      });
+
+      var salaryChart = new barChart(salaryData, salaryConfig)
+
+      salaryChart.render();
+    }
+  });  
+};
+
+var createCompanyChart = function(endpoint){
+  $.get(apiEndpoint + endpoint, function(data, status){
+    if (status === 'success'){
+      var companyData = generateInput('Startups', 'Skills', numOfDatapoints, data)
+      var companyChart = new barChart(companyData, companyConfig);
+
+      companyChart.render();
+    }
   });
+};
 
-  b.render();
-  
-  var data3 = generateInput('AvgSal', 'Skill', numOfDatapoints, data);
 
-  data3.metrics = data3.metrics.map(function(m){
-    return Math.round(m);
-  });
+// createSalaryJobCharts('SalaryJobBySkill');
+// createCompanyChart('CompanyBySkill');
+createSalaryJobCharts('FilterJobSalaryBySkill/san_francisco|hardware_engineer');
+createCompanyChart('FilterCompanyBySkill/san_francisco|hardware_engineer');
 
-  var b3 = new barChart(data3, {
-    selector: '.wrapper3',
-    colors: ['#E65E5E'],
-    width: colWidth
-  })
-
-  b3.render();
-});
-
-$.get(apiEndpoint + 'CompanyBySkill', function(data, status){
-  var data2 = generateInput('Startups', 'Skills', numOfDatapoints, data)
-  var b2 = new barChart(data2, {
-    selector: '.wrapper2',
-    colors: ['#9686E9'],
-    width: colWidth
-  })
-
-  b2.render();
-})
 
 
 $("#update").click(function(){
