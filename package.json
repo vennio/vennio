@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^2.9.25",
+    "cors": "^2.7.1",
     "express": "^4.12.4",
     "jsonfile": "^2.0.0",
     "mongo": "^0.1.0",

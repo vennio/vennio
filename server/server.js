@@ -1,7 +1,13 @@
 var http = require('http');
 var Sequelize = require('sequelize');
 var express = require('express');
+// middleware for dynamically or statically enabling CORS in express/connect applications
+var cors = require('cors');
+
 var app = express();
+
+// Enable all cors request
+app.use(cors());
 
 var currencyMultipliers = {"CAD":0.80,"USD":1,"INR":0.016,"EUR":1.09,"CNY":0.16,"GBP":1.54,"SGD":0.74,"JPY":0.0081};
 
