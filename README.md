@@ -1,6 +1,18 @@
-# vennio
+# VENNIO
+Data analytics platform to visualize a snapshot of the current startup world
 
-### Api Documentations
+## Team
+
+  - __Product Owner__: Irfan Baqui
+  - __Scrum Master__: Mike Yao
+  - __Development Team Members__: Brant Choate, Irfan Baqui, Mike Yao
+
+## Table of Contents
+
+1. [Tech Stack](#tech-stack)
+2. [API Documentations](#api-documentations)
+
+## Api Documentations
 
 Server apiEndpoint: http://
 
