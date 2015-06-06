@@ -26,7 +26,7 @@ We used D3 and jQuery as front-end data visualization, which is powered by MySQL
 
 ### Api Documentations
 
-Server apiEndpoint: http://
+Server apiEndpoint: http://10.8.31.3:9000/
 
 #### Skill Report
 
@@ -40,13 +40,19 @@ Server apiEndpoint: http://
 '/CompanyBySkill'
 ```
 
-3. GET '/FilterJobSalaryBySkill/:locAndRole'
+3. Average salaries and # of jobs based on location and role filters
+```sh
+/FilterJobSalaryBySkill/:locAndRole
 Example: '/FilterJobSalaryBySkill/san_francisco|hardware_engineer'
-returns average salaries and # of jobs grouped by skills based on location and role filters
+```
 
-4. GET '/FilterCompanyBySkill/:locAndRole'
+4. # of companies based on location and role filters
 Example: '/FilterCompanyBySkill/san_francisco|hardware_engineer'
 returns # of companies grouped by skills based on location and role filters
+```sh
+'/FilterCompanyBySkill/:locAndRole'
+Example: '/FilterCompanyBySkill/san_francisco|hardware_engineer'
+```
 
 5. GET '/SalaryJobByLocation'
 returns average salaries and # of jobs grouped by locations
