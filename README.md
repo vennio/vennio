@@ -20,9 +20,9 @@ Data analytics platform to visualize a snapshot of the current startup world
 We used D3 and jQuery as front-end data visualization, which is powered by MySQL database and Express server. 
 
 
+## Development
 
-
-## Api Documentations
+### Api Documentations
 
 Server apiEndpoint: http://
 
@@ -53,5 +53,8 @@ returns average salaries and # of jobs grouped by locations based on skill and r
 8. GET '/FilterCompanyByLocation/:skillAndRole'
 Example: '/FilterCompanyByLocation/javascript|developer'
 returns # of companies grouped by locations based on skill and role filters
+
+### Installing Dependencies
+
 
 See [CONTRIBUTING.md](https://github.com/vennio/vennio/blob/master/_CONTRIBUTING.md) for git workflow guidelines.
