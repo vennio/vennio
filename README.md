@@ -1,5 +1,5 @@
 # VENNIO
-Data analytics platform to visualize a snapshot of the current startup world
+> Data analytics platform to visualize a snapshot of the current startup world
 
 ## Team
 
@@ -10,9 +10,11 @@ Data analytics platform to visualize a snapshot of the current startup world
 ## Table of Contents
 
 1. [Tech Stack](#tech-stack)
-2. [Development](#development)
+1. [Development](#development)
     1. [API Documentations](#api-documentations)
     2. [Installing Dependencies](#installing-dependencies)
+    3. [Deploy to production](#deploy-to-production)
+1. [Contributing](#contributing)
 
 
 
@@ -56,5 +58,7 @@ returns # of companies grouped by locations based on skill and role filters
 
 ### Installing Dependencies
 
+### Deploy to production
 
-See [CONTRIBUTING.md](https://github.com/vennio/vennio/blob/master/_CONTRIBUTING.md) for git workflow guidelines.
+## Contributing
+See [CONTRIBUTING.md](https://github.com/vennio/vennio/blob/master/_CONTRIBUTING.md) for contribution guidelines.
