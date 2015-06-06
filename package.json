@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js",
-    "postinstall": "gulp heroku:production"
+    "postinstall": "gulp heroku:production && ./node_modules/bower/bin/bower install"
   },
   "author": "",
   "license": "ISC",
@@ -40,7 +40,8 @@
     "request": "^2.55.0",
     "request-promise": "^0.4.2",
     "sequelize": "^3.1.1",
-    "travis": "^0.1.1"
+    "travis": "^0.1.1",
+    "bower": "0.6.x"
   },
   "devDependencies": {
     "browser-sync": "^2.7.6",
