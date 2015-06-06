@@ -24,7 +24,6 @@
 ## Tech Stack
 We used D3 and jQuery as front-end data visualization, which is powered by MySQL database and Express server. 
 
-
 ## Development
 
 ### Requirement
@@ -37,47 +36,46 @@ Server apiEndpoint: http://10.8.31.3:9000/
 
 #### Skill Report
 
-1. Average salaries and # of jobs grouped by skills
+* Average salaries and # of jobs grouped by skills
 ```sh
 '/SalaryJobBySkill'
 ```
 
-2. # of companies grouped by skills
+* Number of companies grouped by skills
 ```sh
 '/CompanyBySkill'
 ```
 
-3. Average salaries and # of jobs based on location and role filters
+* Average salaries and # of jobs based on location and role filters
 ```sh
 /FilterJobSalaryBySkill/:locAndRole
 Example: '/FilterJobSalaryBySkill/san_francisco|hardware_engineer'
 ```
 
-4. # of companies based on location and role filters
+* Number of companies based on location and role filters
 ```sh
 '/FilterCompanyBySkill/:locAndRole'
 Example: '/FilterCompanyBySkill/san_francisco|hardware_engineer'
 ```
 
 #### Location Report
-5. Average salaries and # of jobs
+* Average salaries and # of jobs
 ```sh
 '/SalaryJobByLocation'
 ```
 
-6. # of companies
+* Number of companies
 ```sh
 '/CompanyByLocation'
 ```
 
-7. Average salaries and # of jobs based on skill and role filters
+* Average salaries and # of jobs based on skill and role filters
 ```sh
 '/FilterJobSalaryByLocation/:skillAndRole'
 Example: 'FilterJobSalaryByLocation/javascript|developer'
 ```
 
-8. # of companies based on skill and role filters
-returns 
+* Number of companies based on skill and role filters
 ```sh
 '/FilterCompanyByLocation/:skillAndRole'
 Example: '/FilterCompanyByLocation/javascript|developer'
