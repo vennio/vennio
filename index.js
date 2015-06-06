@@ -3,7 +3,8 @@ var Sequelize = require('sequelize');
 var express = require('express');
 // middleware for dynamically or statically enabling CORS in express/connect applications
 var cors = require('cors');
-
+var mysql = require('mysql');
+var fs = require('fs')
 var app = express();
 
 // Enable all cors request
@@ -14,7 +15,7 @@ var currencyMultipliers = {"CAD":0.80,"USD":1,"INR":0.016,"EUR":1.09,"CNY":0.16,
 /******************** Sequelize and MySQL Integration with Table Schemas ***************************/
 
 var sequelize = new Sequelize('vennio', 'root', null, {
-  host		: 	CLEARDB_DATABASE_URL || 'localhost',
+  host		: 	process.env.DATABASE_URL || 'localhost',
   dialect	: 	'mysql',
   port		: 	'3306',
   logging	: 	console.log,
@@ -123,6 +124,24 @@ Job.belongsToMany(Startup, {
 
 
 /******************** Endpoint Configuration ***************************/
+
+//Static files
+app.use('/css', express.static(__dirname+'/client/css'));
+app.use('/img', express.static(__dirname+'/client/img'));
+app.use('/js', express.static(__dirname+'/client/js'));
+app.use('/font', express.static(__dirname+'/font'));
+
+
+
+//Default front page
+app.get('/', function(req,res) {
+  fs.readFile(__dirname+'/index.html', function (err, data) {
+    if (err) throw err;
+    res.writeHeader(200, {"Content-Type": "text/html"});
+    res.write(data);
+    res.end();
+  });
+});
 
 
 // Group Average Salary and Job Count by Location

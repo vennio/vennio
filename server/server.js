@@ -127,7 +127,6 @@ Job.belongsToMany(Startup, {
 
 /******************** Endpoint Configuration ***************************/
 
-<<<<<<< HEAD
 //Static files
 app.use(express.static(__dirname + '/../build'));
 
@@ -141,12 +140,6 @@ app.get('/', function(req,res) {
     res.end();
   });
 });
-=======
-//Default front page
-app.get('/', function(req,res) {
-  res.send('This is the front page');
-})
->>>>>>> Implement deployment changes
 
 
 // Group Average Salary and Job Count by Location
