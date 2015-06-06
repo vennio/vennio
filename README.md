@@ -9,20 +9,27 @@
 
 ## Table of Contents
 
+1. [Project Summary](#project-summary)
 1. [Tech Stack](#tech-stack)
 1. [Development](#development)
-    1. [API Documentations](#api-documentations)
-    2. [Installing Dependencies](#installing-dependencies)
-    3. [Deploy to production](#deploy-to-production)
+    1. [Requirement](#requirement)
+    2. [API Documentations](#api-documentations)
+    3. [Installing Dependencies](#installing-dependencies)
+    4. [Start local server](#start-local-server)
+    5. [Deploy to production](#deploy-to-production)
 1. [Contributing](#contributing)
 
-
+## Project Summary
 
 ## Tech Stack
 We used D3 and jQuery as front-end data visualization, which is powered by MySQL database and Express server. 
 
 
 ## Development
+
+### Requirement
+Node v0.10.x
+Bower 
 
 ### Api Documentations
 
@@ -47,28 +54,38 @@ Example: '/FilterJobSalaryBySkill/san_francisco|hardware_engineer'
 ```
 
 4. # of companies based on location and role filters
-Example: '/FilterCompanyBySkill/san_francisco|hardware_engineer'
-returns # of companies grouped by skills based on location and role filters
 ```sh
 '/FilterCompanyBySkill/:locAndRole'
 Example: '/FilterCompanyBySkill/san_francisco|hardware_engineer'
 ```
 
-5. GET '/SalaryJobByLocation'
-returns average salaries and # of jobs grouped by locations
+#### Location Report
+5. Average salaries and # of jobs
+```sh
+'/SalaryJobByLocation'
+```
 
-6. GET '/CompanyByLocation'
-returns # of companies grouped by locations
+6. # of companies
+```sh
+'/CompanyByLocation'
+```
 
-7. GET '/FilterJobSalaryByLocation/:skillAndRole'
+7. Average salaries and # of jobs based on skill and role filters
+```sh
+'/FilterJobSalaryByLocation/:skillAndRole'
 Example: 'FilterJobSalaryByLocation/javascript|developer'
-returns average salaries and # of jobs grouped by locations based on skill and role filters
+```
 
-8. GET '/FilterCompanyByLocation/:skillAndRole'
+8. # of companies based on skill and role filters
+returns 
+```sh
+'/FilterCompanyByLocation/:skillAndRole'
 Example: '/FilterCompanyByLocation/javascript|developer'
-returns # of companies grouped by locations based on skill and role filters
+```
 
 ### Installing Dependencies
+
+### Start local server
 
 ### Deploy to production
 
