@@ -10,7 +10,17 @@ Data analytics platform to visualize a snapshot of the current startup world
 ## Table of Contents
 
 1. [Tech Stack](#tech-stack)
-2. [API Documentations](#api-documentations)
+2. [Development](#development)
+    1. [API Documentations](#api-documentations)
+    2. [Installing Dependencies](#installing-dependencies)
+
+
+
+## Tech Stack
+We used D3 and jQuery as front-end data visualization, which is powered by MySQL database and Express server. 
+
+
+
 
 ## Api Documentations
 
