@@ -28,8 +28,10 @@ We used D3 and jQuery as front-end data visualization, which is powered by MySQL
 
 Server apiEndpoint: http://
 
-1. GET '/SalaryJobBySkill'
- returns average salaries and # of jobs grouped by skills
+1. Average salaries and # of jobs grouped by skills
+'''
+'/SalaryJobBySkill'
+'''
 
 2. GET '/CompanyBySkill'
 return # of companies grouped by skills
