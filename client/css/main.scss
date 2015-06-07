@@ -3,7 +3,8 @@ body {
 }
 
 .container {
-  max-width: 1600px;
+  max-width: 2000px;
+  width: 95%;
 }
 
 .bg {
@@ -63,7 +64,7 @@ body {
   font-size: 20px;
   color: #FFFFFF;
   letter-spacing: 1.7px;
-  line-height: 24px;
+  line-height: 38px;
   text-transform: uppercase;
 
   h2 {
@@ -87,9 +88,25 @@ body {
   }
 }
 
+
+//Filters
 .filter {
   position: relative;
   display: inline-block;
+}
+
+.filter-button {
+  background-color: #10A2E9 !important;
+  border: none !important;
+  border-radius: 0px !important;
+  padding: 12px 10px;
+  text-decoration: none;
+  color: #fff;
+  margin-left: 2px;
+  &:hover {
+    background: darken(#10A2E9, 5%);
+    color: #ddd;
+  }
 }
 
 .filters {
@@ -131,13 +148,15 @@ text {
 
 }
 
+
 //Styles for TT-Menu
 .typeahead {
   background: #333 !important;
   font-size: 14px;
   text-transform: uppercase;
-  border:1px solid #666 !important;
+  border:0px solid #222 !important;
   border-radius: 0 !important;
+  margin-bottom: 0;
 }
 
 .tt-menu {

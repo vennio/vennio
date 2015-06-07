@@ -27,8 +27,12 @@
       <div class="row main-header" >
         <h2>Skills Dashboard</h2>
         <div class="filters">
-          <input type="text" class="typeahead" placeholder="Role">
-          <input type="text" class="typeahead" placeholder="Location">
+          <span>Filter By:</span>
+          <form>
+            <input type="text" name="role" class="role-input typeahead" placeholder="Role">
+            <input type="text" name="location" class="location-input typeahead" placeholder="Location">
+            <input type="submit" name="submit" class="filter-button">
+          </form>
         </div>
       </div>
 
@@ -44,7 +48,7 @@
           </div>
         </div>
         <div class="barchart one-third column">
-          <h3>Salary</h3>
+          <h3>Average Salary</h3>
           <div class="wrapper3">
           </div>
         </div>

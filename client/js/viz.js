@@ -1,10 +1,25 @@
-var BarChart = function(data, config) {
+var BarChart = function(config) {
 
   this.width = config.width || 400;
   this.height = config.height || 700;
   this.offset = config.offset || 19;
   this.colors = config.colors || ['#000000'];
   this.selector = config.selector;
+
+  this.canvas = d3.select(this.selector)
+    .append('svg')
+    .attr({
+      width: this.width,
+      height: this.height
+    });
+
+  return this;
+};
+
+BarChart.prototype.render = function(data) {
+  var _this = this;
+
+  this.canvas.selectAll('g').remove();
 
   this.categories = data.categories;
   this.metrics = data.metrics;
@@ -21,31 +36,17 @@ var BarChart = function(data, config) {
     .domain([0, this.categories.length])
     .range(this.colors);
 
-  this.canvas = d3.select(this.selector)
-    .append('svg')
-    .attr({
-      width: this.width,
-      height: this.height
-    });
-
   this.yAxis = d3.svg.axis()
     .orient('right')
     .scale(this.yscale)
     .tickSize(0)
     .tickFormat(function(d, i) { return data.categories[i]; })
 
-  return this;
-};
-
-BarChart.prototype.render = function() {
-  var _this = this;
-  this.canvas.selectAll('g').remove();
-
   var bars = this.canvas.append('g')
     .attr('transform', 'translate(0,0)')
     .attr('class', 'bars')
     .selectAll('rect')
-    .data(this.metrics)
+    .data(data.metrics)
     .enter()
       .append('rect')
       .attr('height', 65)
@@ -74,7 +75,7 @@ BarChart.prototype.render = function() {
 
   d3.selectAll('.bars')
     .selectAll('text')
-    .data(this.metrics)
+    .data(data.metrics)
     .enter()
       .append('text')
       .attr('text-anchor', 'end')
@@ -114,7 +115,6 @@ var generateInput = function(metric, group, limit, data) {
   var dataLimited = data.slice(0, limit);
 
   // categories are the yaxis labels
-  //TODO: The leading empty string needs refactor
   input.categories = [''].concat(
     dataLimited.map(function(item) {
       return item[group];
@@ -130,10 +130,9 @@ var generateInput = function(metric, group, limit, data) {
   return input;
 };
 
-var colWidth = $('.BarChart').width();
-
 // Server configuration
 var apiEndpoint = 'http://10.8.31.3:9000/';
+var colWidth = $('.barchart').width();
 
 // D3 configuration
 var numOfDatapoints = 10;
@@ -156,76 +155,104 @@ var salaryConfig = {
   width: colWidth
 };
 
-// Location Filter library Static
-var locationsFilterLibarary = ["san_francisco", "new_york,_ny", "bangalore", "london", "los_angeles", "boston", "new_delhi", "mumbai", "palo_alto", "toronto", "washington,_dc", "chicago", "mountain_view", "berlin", "seattle", "gurgaon", "austin", "silicon_valley", "amsterdam", "singapore", "vancouver", "cambridge,_ma", "montreal", "san_mateo", "hyderabad", "paris", "san_diego", "santa_monica", "redwood_city", "atlanta", "india", "sunnyvale", "hong_kong", "united_states", "san_jose", "philadelphia", "oakland", "san_francisco_bay_area", "menlo_park", "sydney", "pune", "remote", "barcelona", "denver", "united_kingdom", "dallas", "noida", "boulder", "santa_clara,_ca", "berkeley", "earth", "brooklyn", "miami", "istanbul", "houston", "munich", "tel_aviv_yafo", "new_york", "melbourne", "beijing", "cincinnati", "florida", "detroit", "baltimore", "phoenix", "madrid", "pittsburgh", "las_vegas", "durham", "irvine", "santa_barbara", "dubai", "europe", "anywhere", "salt_lake_city", "bangkok", "portland", "pasadena,_ca", "newport_beach", "hamburg", "madras", "stockholm", "los_altos", "raleigh", "orange_county"];
+var jobChart = new BarChart(jobConfig);
+var salaryChart = new BarChart(salaryConfig);
+var companyChart = new BarChart(companyConfig)
 
 // Initial load overall without any filters
-var createSalaryJobCharts = function(endpoint, group){
-  $.get(apiEndpoint + endpoint, function(data,status){
-    if (status === 'success'){
-      var jobData = generateInput('Jobs', 'Skill', numOfDatapoints, data);
-      var jobChart = new BarChart(jobData, jobConfig);
-
-      jobChart.render();
-
-      var salaryData = generateInput('AvgSal', 'Skill', numOfDatapoints, data);
-
-      salaryData.metrics = salaryData.metrics.map(function(m){
-        return Math.round(m);
+var createSalaryJobCharts = function(endpoint, group) {
+  $.get(apiEndpoint + endpoint, function(data, status) {
+    if (status === 'success') {
+      var jobData = generateInput('Jobs', group, numOfDatapoints, data);
+      var salaryData = generateInput('AvgSal', group, numOfDatapoints, data);
+      salaryData.metrics = salaryData.metrics.map(function(m) {
+        return Math.round(m / 1000);
       });
 
-      var salaryChart = new BarChart(salaryData, salaryConfig)
-
-      salaryChart.render();
+      jobChart.render(jobData);
+      salaryChart.render(salaryData);
     }
   });
 };
 
-var createCompanyChart = function(endpoint, group){
-  $.get(apiEndpoint + endpoint, function(data, status){
-    if (status === 'success'){
-      var companyData = generateInput('Startups', 'Skills', numOfDatapoints, data)
-      var companyChart = new BarChart(companyData, companyConfig);
-
-      companyChart.render();
+var createCompanyChart = function(endpoint, group) {
+  $.get(apiEndpoint + endpoint, function(data, status) {
+    if (status === 'success') {
+      var companyData = generateInput('Startups', group, numOfDatapoints, data);
+      companyChart.render(companyData);
     }
   });
 };
 
-// createSalaryJobCharts('SalaryJobBySkill');
-// createCompanyChart('CompanyBySkill');
-createSalaryJobCharts('FilterJobSalaryBySkill/san_francisco|hardware_engineer');
-createCompanyChart('FilterCompanyBySkill/san_francisco|hardware_engineer');
-/*For Skill Report*/
+var locArray = ["san_francisco", "new_york,_ny", "bangalore", "london", "los_angeles", "boston", "new_delhi", "mumbai", "palo_alto", "toronto", "washington,_dc", "chicago", "mountain_view", "berlin", "seattle", "gurgaon", "austin", "silicon_valley", "amsterdam", "singapore", "vancouver", "cambridge,_ma", "montreal", "san_mateo", "hyderabad", "paris", "san_diego", "santa_monica", "redwood_city", "atlanta", "india", "sunnyvale", "hong_kong", "united_states", "san_jose", "philadelphia", "oakland", "san_francisco_bay_area", "menlo_park", "sydney", "pune", "remote", "barcelona", "denver", "united_kingdom", "dallas", "noida", "boulder", "santa_clara,_ca", "berkeley", "earth", "brooklyn", "miami", "istanbul", "houston", "munich", "tel_aviv_yafo", "new_york", "melbourne", "beijing", "cincinnati", "florida", "detroit", "baltimore", "phoenix", "madrid", "pittsburgh", "las_vegas", "durham", "irvine", "santa_barbara", "dubai", "europe", "anywhere", "salt_lake_city", "bangkok", "portland", "pasadena,_ca", "newport_beach", "hamburg", "madras", "stockholm", "los_altos", "raleigh", "orange_county"];
+var roleArray = [
+  'office_manager',
+  'frontend_developer',
+  'devops',
+  'sales',
+  'operations',
+  'finance',
+  'designer',
+  'hardware_engineer',
+  'product_manager',
+  'data_scientist',
+  'mobile_developer',
+  'full_stack_developer',
+  'attorney',
+  'human_resources',
+  'marketing',
+  'developer',
+  'backend_developer'
+];
 
-// Call these two functions to populate the overall charts upon page load
+var locations = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.whitespace,
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  local: locArray
+});
 
+var roles = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.whitespace,
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  local: roleArray
+});
 
-// Given location and role filters, construct the endpoint
-// such as: 'FilterJobSalaryBySkill' + '/' + location + '|' + role
-// such as: 'FilterCompanyBySkill' + '/' + location + '|' + role
+$(function() {
 
-// createSalaryJobCharts('FilterJobSalaryBySkill/san_francisco|hardware_engineer', 'Skill');
-// createCompanyChart('FilterCompanyBySkill/san_francisco|hardware_engineer', 'Skills');
+  $('.location-input.typeahead').typeahead({
+    hint: true,
+    highlight: true,
+    minLength: 1
+  },
+  {
+    name: 'roles',
+    source: locations
+  });
 
+  $('.role-input.typeahead').typeahead({
+    hint: true,
+    highlight: true,
+    minLength: 1
+  },
+  {
+    name: 'roles',
+    source: roles
+  });
 
-/*For Location Report*/
+  var filterSubmit = function(e) {
+    e.preventDefault();
+    var map = {};
+    $('.twitter-typeahead input.tt-input').each(function() {
+      map[$(this).attr('name')] = $(this).val();
+    });
 
-// Call these two functions to populate the overall charts upon page load
-// createSalaryJobCharts('SalaryJobByLocation', 'Location');
-// createCompanyChart('CompanyByLocation', 'Locations');
+    createSalaryJobCharts('FilterJobSalaryBySkill/' + map.location + '|' + map.role, 'Skill');
+    createCompanyChart('FilterCompanyBySkill/' + map.location + '|' + map.role, 'Skills');
+  }
 
-// Given skill and role filters, construct the endpoint
-// such as: 'FilterJobSalaryByLocation' + '/' + skill + '|' + role
-// such as: 'FilterCompanyByLocation' + '/' + skill + '|' + role
+  $('.filter-button').on('click', filterSubmit);
 
-// createSalaryJobCharts('FilterJobSalaryByLocation/javascript|developer', 'Location');
-// createCompanyChart('FilterCompanyByLocation/javascript|developer', 'Locations');
+  createSalaryJobCharts('SalaryJobBySkill', 'Skill');
+  createCompanyChart('CompanyBySkill', 'Skills');
 
-
-
-$('#update').click(function() {
-  b.render();
-  b2.render();
-  b3.render();
 });

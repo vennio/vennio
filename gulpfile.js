@@ -23,7 +23,6 @@ gulp.task('js', function() {
     .pipe(concat('app.js'))
     .pipe(gulp.dest('build/js'))
     .pipe(rename({suffix: '.min'}))
-    // .pipe(uglify())
     .pipe(gulp.dest('build/js'))
 
 });
@@ -58,10 +57,10 @@ gulp.task('css', function() {
 
 gulp.task('sass', function() {
   return gulp.src([
-    "client/css/*.scss"
+    'client/css/*.scss'
   ])
   .pipe(sass({outputStyle: 'compressed'}))
-  .pipe(gulp.dest("build/css"))
+  .pipe(gulp.dest('build/css'))
   .pipe(browserSync.stream());
 });
 
@@ -79,14 +78,14 @@ gulp.task('bsync', function() {
 
 });
 
-gulp.task('bs-reload', function () {
+gulp.task('bs-reload', function() {
   return browserSync.reload();
 })
 
 gulp.task('default', ['sass', 'css', 'fonts', 'bsync', 'js', 'html', 'img'], function() {
 
-  gulp.watch(['client/js/*.js'], ['jshint','js', 'bs-reload']);
+  gulp.watch(['client/js/*.js'], ['jshint', 'js', 'bs-reload']);
   gulp.watch(['client/css/**/*.scss'], ['sass']);
-  gulp.watch(['client/*.html'], ['html','bs-reload']);
+  gulp.watch(['client/*.html'], ['html', 'bs-reload']);
 
 });
