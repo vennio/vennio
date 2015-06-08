@@ -17,14 +17,15 @@ gulp.task('js', function() {
   return gulp.src([
     'client/bower_components/d3/d3.js',
     'client/bower_components/jquery/dist/jquery.js',
+    'client/bower_components/pace/pace.js',
+    'client/bower_components/typeahead.js/dist/typeahead.bundle.js',
     'client/js/*.js'
     ])
     .pipe(concat('app.js'))
     .pipe(gulp.dest('build/js'))
     .pipe(rename({suffix: '.min'}))
-    // .pipe(uglify())
     .pipe(gulp.dest('build/js'))
-    
+
 });
 
 gulp.task('jshint', function() {
@@ -49,6 +50,7 @@ gulp.task('css', function() {
   return gulp.src([
     'client/bower_components/skeleton/css/normalize.css',
     'client/bower_components/skeleton/css/skeleton.css',
+    'client/bower_components/pace/themes/blue/pace-theme-corner-indicator.css',
     'client/font/stylesheet.css'
   ])
   .pipe(concat('vendor.css'))
@@ -57,10 +59,10 @@ gulp.task('css', function() {
 
 gulp.task('sass', function() {
   return gulp.src([
-    "client/css/*.scss"
+    'client/css/*.scss'
   ])
   .pipe(sass({outputStyle: 'compressed'}))
-  .pipe(gulp.dest("build/css"))
+  .pipe(gulp.dest('build/css'))
   .pipe(browserSync.stream());
 });
 
@@ -78,15 +80,15 @@ gulp.task('bsync', function() {
 
 });
 
-gulp.task('bs-reload', function () {
+gulp.task('bs-reload', function() {
   return browserSync.reload();
 })
 
 gulp.task('default', ['sass', 'css', 'fonts', 'bsync', 'js', 'html', 'img'], function() {
 
-  gulp.watch(['client/js/*.js'], ['jshint','js', 'bs-reload']);
+  gulp.watch(['client/js/*.js'], ['jshint', 'js', 'bs-reload']);
   gulp.watch(['client/css/**/*.scss'], ['sass']);
-  gulp.watch(['client/*.html'], ['html','bs-reload']);
+  gulp.watch(['client/*.html'], ['html', 'bs-reload']);
 
 });
 

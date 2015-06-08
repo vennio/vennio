@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body class="bg">
-  
+
   <div class="nav">
     <div class="container">
       <div class="row">
@@ -20,16 +20,19 @@
       </div>
     </div>
   </div>
-  
+
   <div class="main">
     <div class="container">
-      
+
       <div class="row main-header" >
         <h2>Skills Dashboard</h2>
         <div class="filters">
-          <span class="filter-label"></span>
-          <a href="#" id="update">Role</a>
-          <a href="#">Location</a>
+          <span>Filter By:</span>
+          <form>
+            <input type="text" name="role" class="role-input typeahead" placeholder="Role">
+            <input type="text" name="location" class="location-input typeahead" placeholder="Location">
+            <input type="submit" name="submit" class="filter-button">
+          </form>
         </div>
       </div>
 
@@ -45,13 +48,13 @@
           </div>
         </div>
         <div class="barchart one-third column">
-          <h3>Salary</h3>
+          <h3>Average Salary</h3>
           <div class="wrapper3">
           </div>
         </div>
       </div>
 
-    </div>  
+    </div>
   </div>
 
   <script src="/js/app.min.js"></script>
