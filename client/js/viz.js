@@ -5,6 +5,7 @@ var BarChart = function(config) {
   this.offset = config.offset || 19;
   this.colors = config.colors || ['#000000'];
   this.selector = config.selector;
+  this.metricLabel = config.metricLabel;
 
   this.canvas = d3.select(this.selector)
     .append('svg')
@@ -46,11 +47,7 @@ BarChart.prototype.render = function(data) {
     .orient('right')
     .scale(this.yscale)
     .tickSize(0)
-    .tickFormat(function(d, i) {
-      if (typeof data.categories[i] === 'string') {
-        return data.categories[i].split('_').join(' ');
-      }
-    });
+    .tickFormat(function(d, i) { return data.categories[i]; });
 
   var bars = this.canvas.append('g')
     .attr('transform', 'translate(0,0)')
@@ -83,17 +80,27 @@ BarChart.prototype.render = function(data) {
     .duration(1000)
     .attr({width: function(d) { return _this.xscale(d); }});
 
-  d3.selectAll('.bars')
+  var labels = d3.selectAll('.bars')
     .selectAll('text')
     .data(data.metrics)
-    .enter()
-      .append('text')
-      .attr('text-anchor', 'end')
-      .attr('x', 0)
-      .transition()
-      .duration(1000)
-      .attr({x:function(d) {return _this.xscale(d) - 10; }, y:function(d, i) { return _this.yscale(i) + 42; }})
-      .text(function(d) { return d; }).style({'fill':'#fff', 'font-size':'40px'});
+    .enter();
+
+
+  labels.append('text')
+    .attr('text-anchor', 'end')
+    .attr('x', 0)
+    .transition()
+    .duration(1000)
+    .attr({x:function(d) {return _this.xscale(d) - 10; }, y:function(d, i) { return _this.yscale(i) + 32; }})
+    .text(function(d) { return d; }).style({'fill':'#fff', 'font-size':'30px'});
+
+  labels.append('text')
+    .attr('text-anchor', 'end')
+    .attr('x', 0)
+    .transition()
+    .duration(1000)
+    .attr({x:function(d) {return _this.xscale(d) - 10; }, y:function(d, i) { return _this.yscale(i) + 49; }})
+    .text(this.metricLabel)
 }
 
 var generateCompareFunction = function(metric) {
@@ -150,19 +157,22 @@ var numOfDatapoints = 10;
 var jobConfig = {
   selector: '.wrapper1',
   colors: ['#19C999'],
-  width: colWidth
+  width: colWidth,
+  metricLabel: 'Jobs'
 };
 
 var companyConfig = {
   selector: '.wrapper2',
   colors: ['#9686E9'],
-  width: colWidth
+  width: colWidth,
+  metricLabel: 'Companies'
 };
 
 var salaryConfig = {
   selector: '.wrapper3',
   colors: ['#E65E5E'],
-  width: colWidth
+  width: colWidth,
+  metricLabel: 'Dollars (Thousands)'
 };
 
 var jobChart = new BarChart(jobConfig);
