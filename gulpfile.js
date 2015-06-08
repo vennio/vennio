@@ -91,3 +91,5 @@ gulp.task('default', ['sass', 'css', 'fonts', 'bsync', 'js', 'html', 'img'], fun
   gulp.watch(['client/*.html'], ['html', 'bs-reload']);
 
 });
+
+gulp.task('heroku:production', ['sass', 'css', 'fonts', 'js', 'html', 'img']);
