@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 var BarChart = function(config) {
-=======
-var BarChart = function(data, config) {
->>>>>>> 98d12d4130a7e05f855cb9424ee948c36a1cb0ff
 
   this.width = config.width || 400;
   this.height = config.height || 700;
@@ -40,31 +36,11 @@ BarChart.prototype.render = function(data) {
     .domain([0, this.categories.length])
     .range(this.colors);
 
-<<<<<<< HEAD
-=======
-  this.canvas = d3.select(this.selector)
-    .append('svg')
-    .attr({
-      width: this.width,
-      height: this.height
-    });
-
->>>>>>> 98d12d4130a7e05f855cb9424ee948c36a1cb0ff
   this.yAxis = d3.svg.axis()
     .orient('right')
     .scale(this.yscale)
     .tickSize(0)
     .tickFormat(function(d, i) { return data.categories[i]; })
-<<<<<<< HEAD
-=======
-
-  return this;
-};
-
-BarChart.prototype.render = function() {
-  var _this = this;
-  this.canvas.selectAll('g').remove();
->>>>>>> 98d12d4130a7e05f855cb9424ee948c36a1cb0ff
 
   var bars = this.canvas.append('g')
     .attr('transform', 'translate(0,0)')
@@ -139,10 +115,6 @@ var generateInput = function(metric, group, limit, data) {
   var dataLimited = data.slice(0, limit);
 
   // categories are the yaxis labels
-<<<<<<< HEAD
-=======
-  //TODO: The leading empty string needs refactor
->>>>>>> 98d12d4130a7e05f855cb9424ee948c36a1cb0ff
   input.categories = [''].concat(
     dataLimited.map(function(item) {
       return item[group];
@@ -162,7 +134,6 @@ var generateInput = function(metric, group, limit, data) {
 var apiEndpoint = 'http://vennio.herokuapp.com/';
 var colWidth = $('.barchart').width();
 
-<<<<<<< HEAD
 // D3 configuration
 var numOfDatapoints = 10;
 
@@ -179,35 +150,11 @@ var companyConfig = {
 };
 
 var salaryConfig = {
-=======
-var data1 = generateInput('Jobs', 'Skill', 10, SalaryJobBySkill);
-var data2 = generateInput('Startups', 'Skills', 10, CompanyBySkill);
-var data3 = generateInput('AvgSal', 'Skill', 10, SalaryJobBySkill);
-
-data3.metrics = data3.metrics.map(function(m) {
-  return Math.round(m);
-});
-
-var b = new BarChart(data1, {
-  selector: '.wrapper1',
-  colors: ['#19C999'],
-  width: colWidth
-});
-
-var b2 = new BarChart(data2, {
-  selector: '.wrapper2',
-  colors: ['#9686E9'],
-  width: colWidth
-})
-
-var b3 = new BarChart(data3, {
->>>>>>> 98d12d4130a7e05f855cb9424ee948c36a1cb0ff
   selector: '.wrapper3',
   colors: ['#E65E5E'],
   width: colWidth
 };
 
-<<<<<<< HEAD
 var jobChart = new BarChart(jobConfig);
 var salaryChart = new BarChart(salaryConfig);
 var companyChart = new BarChart(companyConfig)
@@ -309,14 +256,3 @@ $(function() {
   createCompanyChart('CompanyBySkill', 'Skills');
 
 });
-=======
-b.render();
-b2.render();
-b3.render();
-
-$('#update').click(function() {
-  b.render();
-  b2.render();
-  b3.render();
-});
->>>>>>> 98d12d4130a7e05f855cb9424ee948c36a1cb0ff

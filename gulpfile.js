@@ -17,8 +17,8 @@ gulp.task('js', function() {
   return gulp.src([
     'client/bower_components/d3/d3.js',
     'client/bower_components/jquery/dist/jquery.js',
-    'client/bower_components/typeahead.js/dist/typeahead.bundle.js',
     'client/bower_components/pace/pace.js',
+    'client/bower_components/typeahead.js/dist/typeahead.bundle.js',
     'client/js/*.js'
     ])
     .pipe(concat('app.js'))
