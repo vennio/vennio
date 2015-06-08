@@ -18,7 +18,10 @@ gulp.task('js', function() {
     'client/bower_components/d3/d3.js',
     'client/bower_components/jquery/dist/jquery.js',
     'client/bower_components/typeahead.js/dist/typeahead.bundle.js',
+<<<<<<< HEAD
     'client/bower_components/pace/pace.js',
+=======
+>>>>>>> 98d12d4130a7e05f855cb9424ee948c36a1cb0ff
     'client/js/*.js'
     ])
     .pipe(concat('app.js'))

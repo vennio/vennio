@@ -90,6 +90,7 @@ body {
 
 
 //Filters
+
 .filter {
   position: relative;
   display: inline-block;
@@ -148,15 +149,13 @@ text {
 
 }
 
-
 //Styles for TT-Menu
 .typeahead {
   background: #333 !important;
   font-size: 14px;
   text-transform: uppercase;
-  border:0px solid #222 !important;
+  border:1px solid #666 !important;
   border-radius: 0 !important;
-  margin-bottom: 0;
 }
 
 .tt-menu {
