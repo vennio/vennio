@@ -7,14 +7,14 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js",
-    "postinstall": "gulp heroku:production && ./node_modules/bower/bin/bower install"
+    "postinstall": "bower install && gulp heroku:production"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^2.9.25",
+    "bower": "^1.4.1",
     "browser-sync": "^2.7.6",
     "cors": "^2.7.1",
     "express": "^4.12.4",

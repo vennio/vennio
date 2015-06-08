@@ -131,7 +131,7 @@ var colWidth = $('.barchart').width();
 
 
 // Server configuration
-var apiEndpoint = 'http://10.8.31.3:9000/';
+var apiEndpoint = 'https://vennio.herokuapp.com/';
 
 // D3 configuration
 var numOfDatapoints = 10;
