@@ -18,6 +18,7 @@ gulp.task('js', function() {
     'client/bower_components/d3/d3.js',
     'client/bower_components/jquery/dist/jquery.js',
     'client/bower_components/typeahead.js/dist/typeahead.bundle.js',
+    'client/bower_components/pace/pace.js',
     'client/js/*.js'
     ])
     .pipe(concat('app.js'))
@@ -49,6 +50,7 @@ gulp.task('css', function() {
   return gulp.src([
     'client/bower_components/skeleton/css/normalize.css',
     'client/bower_components/skeleton/css/skeleton.css',
+    'client/bower_components/pace/themes/blue/pace-theme-corner-indicator.css',
     'client/font/stylesheet.css'
   ])
   .pipe(concat('vendor.css'))
