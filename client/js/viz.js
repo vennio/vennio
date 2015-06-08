@@ -17,6 +17,12 @@ var BarChart = function(config) {
 };
 
 BarChart.prototype.render = function(data) {
+
+  if (data.metrics.length === 0) {
+    this.canvas.selectAll('g').remove();
+    $('.barchart').text('No Results - Please Try Another Query');
+  }
+
   var _this = this;
 
   this.canvas.selectAll('g').remove();
