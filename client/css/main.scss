@@ -117,6 +117,9 @@ body {
   color: #fff;
   text-decoration: none;
   margin-left: 10px;
+  form, span {
+    display: inline;
+  }
 }
 
 .filter-list {

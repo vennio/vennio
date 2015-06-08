@@ -40,7 +40,7 @@ BarChart.prototype.render = function(data) {
     .orient('right')
     .scale(this.yscale)
     .tickSize(0)
-    .tickFormat(function(d, i) { return data.categories[i]; })
+    .tickFormat(function(d, i) { return data.categories[i]; });
 
   var bars = this.canvas.append('g')
     .attr('transform', 'translate(0,0)')
@@ -64,7 +64,7 @@ BarChart.prototype.render = function(data) {
     .attr('transform', 'translate(10,-40)')
     .style('opacity', '1')
     .attr('id', 'yaxis')
-    .style({'fill':'#fff', 'font-size':'22px'})
+    .style({'fill':'#fff', 'font-size':'14px'})
     .call(this.yAxis);
 
   //ANIMATION
