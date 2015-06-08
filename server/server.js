@@ -15,8 +15,8 @@ var currencyMultipliers = {"CAD":0.80,"USD":1,"INR":0.016,"EUR":1.09,"CNY":0.16,
 
 /******************** Sequelize and MySQL Integration with Table Schemas ***************************/
 
-var sequelize = new Sequelize('vennio', 'root', null, {
-  host		: 	process.env.DATABASE_URL || 'localhost',
+var sequelize = new Sequelize('heroku_9dc6f7a43b753af', 'bae5d84c4b9b57', '49ada8f9', {
+  host		: 	'us-cdbr-iron-east-02.cleardb.net',
   dialect	: 	'mysql',
   port		: 	'3306',
   logging	: 	console.log,
