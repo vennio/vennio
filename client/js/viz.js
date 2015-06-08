@@ -83,7 +83,7 @@ BarChart.prototype.render = function(data) {
       .transition()
       .duration(1000)
       .attr({x:function(d) {return _this.xscale(d) - 10; }, y:function(d, i) { return _this.yscale(i) + 42; }})
-      .text(function(d) { return d + 'test'; }).style({'fill':'#fff', 'font-size':'40px'});
+      .text(function(d) { return d; }).style({'fill':'#fff', 'font-size':'40px'});
 }
 
 var generateCompareFunction = function(metric) {
