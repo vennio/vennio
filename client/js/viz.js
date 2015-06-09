@@ -47,7 +47,11 @@ BarChart.prototype.render = function(data) {
     .orient('right')
     .scale(this.yscale)
     .tickSize(0)
-    .tickFormat(function(d, i) { return data.categories[i]; });
+    .tickFormat(function(d, i) {
+      if (typeof data.categories[i] === 'string') {
+        return data.categories[i].split('_').join(' ');
+      }
+    });
 
   var bars = this.canvas.append('g')
     .attr('transform', 'translate(0,0)')
@@ -88,19 +92,15 @@ BarChart.prototype.render = function(data) {
 
   labels.append('text')
     .attr('text-anchor', 'end')
-    .attr('x', 0)
-    .transition()
-    .duration(1000)
     .attr({x:function(d) {return _this.xscale(d) - 10; }, y:function(d, i) { return _this.yscale(i) + 32; }})
-    .text(function(d) { return d; }).style({'fill':'#fff', 'font-size':'30px'});
+    .text(function(d) { return d; })
+    .style({'fill':'#fff', 'font-size':'28px', 'font-family': 'aileronbold'});
 
   labels.append('text')
     .attr('text-anchor', 'end')
-    .attr('x', 0)
-    .transition()
-    .duration(1000)
     .attr({x:function(d) {return _this.xscale(d) - 10; }, y:function(d, i) { return _this.yscale(i) + 49; }})
     .text(this.metricLabel)
+    .style({'fill':'#fff', 'font-size':'12px'});
 }
 
 var generateCompareFunction = function(metric) {
@@ -172,7 +172,7 @@ var salaryConfig = {
   selector: '.wrapper3',
   colors: ['#E65E5E'],
   width: colWidth,
-  metricLabel: 'Dollars (Thousands)'
+  metricLabel: 'K ($)'
 };
 
 var jobChart = new BarChart(jobConfig);
@@ -266,8 +266,14 @@ $(function() {
       map[$(this).attr('name')] = $(this).val();
     });
 
-    createSalaryJobCharts('FilterJobSalaryBySkill/' + map.location + '|' + map.role, 'Skill');
-    createCompanyChart('FilterCompanyBySkill/' + map.location + '|' + map.role, 'Skills');
+    if (map.role === '' && map.location === '') {
+      createSalaryJobCharts('SalaryJobBySkill', 'Skill');
+      createCompanyChart('CompanyBySkill', 'Skills');
+    } else {
+      createSalaryJobCharts('FilterJobSalaryBySkill/' + map.location + '|' + map.role, 'Skill');
+      createCompanyChart('FilterCompanyBySkill/' + map.location + '|' + map.role, 'Skills');
+    }
+
   }
 
   $('.filter-button').on('click', filterSubmit);
