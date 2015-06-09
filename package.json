@@ -14,8 +14,9 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^2.9.25",
-    "bower": "^1.4.1",
+    "bower": "0.6.x",
     "browser-sync": "^2.7.6",
+    "chai": "^3.0.0",
     "cors": "^2.7.1",
     "express": "^4.12.4",
     "fs": "0.0.2",
@@ -32,6 +33,7 @@
     "jshint-stylish": "^2.0.0",
     "jsonfile": "^2.0.0",
     "main-bower-files": "^2.8.0",
+    "mocha": "^2.2.5",
     "mongo": "^0.1.0",
     "mongoose": "^4.0.3",
     "mysql": "^2.7.0",
@@ -40,8 +42,7 @@
     "request": "^2.55.0",
     "request-promise": "^0.4.2",
     "sequelize": "^3.1.1",
-    "travis": "^0.1.1",
-    "bower": "0.6.x"
+    "travis": "^0.1.1"
   },
   "devDependencies": {
     "browser-sync": "^2.7.6",
