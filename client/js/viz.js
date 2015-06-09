@@ -17,6 +17,12 @@ var BarChart = function(config) {
 };
 
 BarChart.prototype.render = function(data) {
+
+  if (data.metrics.length === 0) {
+    this.canvas.selectAll('g').remove();
+    $('.barchart').text('No Results - Please Try Another Query');
+  }
+
   var _this = this;
 
   this.canvas.selectAll('g').remove();
@@ -40,7 +46,11 @@ BarChart.prototype.render = function(data) {
     .orient('right')
     .scale(this.yscale)
     .tickSize(0)
-    .tickFormat(function(d, i) { return data.categories[i]; });
+    .tickFormat(function(d, i) {
+      if (typeof data.categories[i] === 'string') {
+        return data.categories[i].split('_').join(' ');
+      }
+    });
 
   var bars = this.canvas.append('g')
     .attr('transform', 'translate(0,0)')
