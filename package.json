@@ -7,7 +7,8 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "test" : "./node_modules/mocha/bin/mocha"
+    "test" : "./node_modules/mocha/bin/mocha",
+    "postinstall": "bower install && gulp heroku:production"
   },
   "author": "",
   "license": "ISC",
