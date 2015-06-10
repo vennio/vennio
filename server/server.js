@@ -5,7 +5,6 @@ var express = require('express');
 var cors = require('cors');
 var mysql = require('mysql');
 var fs = require('fs')
-var path = require('path');
 var app = express();
 
 // Enable all cors request
