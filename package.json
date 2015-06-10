@@ -8,8 +8,6 @@
   },
   "scripts": {
     "test" : "./node_modules/mocha/bin/mocha"
-    // "start": "node server/server.js",
-    // "postinstall": "bower install && gulp heroku:production"
   },
   "author": "",
   "license": "ISC",
