@@ -75,7 +75,6 @@ var ChartView = Backbone.View.extend({
     return input;
   },
 
-
   createSalaryJobCharts: function(endpoint, group, context) {
     $.get(this.apiEndpoint + endpoint, function(data, status) {
       if (status === 'success') {
@@ -93,7 +92,6 @@ var ChartView = Backbone.View.extend({
   },
 
   draw: function(data) {
-    debugger;
     if (data.metrics.length === 0) {
       this.canvas.selectAll('g').remove();
       $('.barchart').text('No Results - Please Try Another Query');
@@ -148,7 +146,7 @@ var ChartView = Backbone.View.extend({
       .attr('id', 'yaxis')
       .style({'fill':'#fff', 'font-size':'14px'})
       .call(this.yAxis);
-  
+
     //ANIMATION
     d3.select(this.selector).selectAll('rect')
       .transition()
@@ -179,7 +177,7 @@ var ChartView = Backbone.View.extend({
 
     this.$el.append(this.selector);
     console.log(this.canvas);
-    return this.$el; 
+    return this.$el;
 
   }
 

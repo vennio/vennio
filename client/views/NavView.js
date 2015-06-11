@@ -1,6 +1,7 @@
 var NavView = Backbone.View.extend({
 
-  template: _.template('<div class="container">' +
+  template: _.template(
+    '<div class="container">' +
       '<div class="row">' +
         '<a href="#" class="logo">Vennio</a>' +
         '<span class="tagline">The Current State of Tech Startup Jobs</span>' +
@@ -12,21 +13,23 @@ var NavView = Backbone.View.extend({
     '</div>'),
 
   events: {
-          "click #skillsReport": "doSomething",
-          "click #locationsReport": "doSomething",
-      },
+    'click #skillsReport': function() {
+      return console.log('SKILLS');
+    },
 
-  doSomething: function() {
-    return console.log('I AM HERE');
+    'click #locationsReport': function() {
+      return console.log('LOC');
+    }
   },
 
   initialize: function(params){
     // this.render();
   },
 
-  render: function(){
+  render: function() {
     this.$el.empty();
     this.$el.append(this.template({}));
+    this.setElement(this.$el);
     return this.$el;
   }
 

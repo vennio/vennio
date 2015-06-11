@@ -94,7 +94,8 @@ gulp.task('bs-reload', function() {
 
 gulp.task('default', ['sass', 'css', 'fonts', 'bsync', 'js', 'html', 'img'], function() {
 
-  gulp.watch(['client/js/*.js'], ['jshint', 'js', 'bs-reload']);
+  gulp.watch(['client/js/*.js'], ['js', 'bs-reload']);
+  gulp.watch(['client/views/*.js'], ['js', 'bs-reload']);
   gulp.watch(['client/css/**/*.scss'], ['sass']);
   gulp.watch(['client/*.html'], ['html', 'bs-reload']);
 
