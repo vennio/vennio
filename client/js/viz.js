@@ -148,7 +148,8 @@ var generateInput = function(metric, group, limit, data) {
 };
 
 // Server configuration
-var apiEndpoint = 'http://vennio.herokuapp.com/';
+// var apiEndpoint = 'http://vennio.herokuapp.com/';
+var apiEndpoint = 'http://localhost:9000/';
 var colWidth = $('.barchart').width();
 
 // D3 configuration
