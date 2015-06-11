@@ -1,0 +1,61 @@
+{
+  "name": "thesis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "scripts": {
+    "start": "node server/server.js",
+    "postinstall": "bower install && gulp heroku:production"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^2.9.25",
+    "bower": "^1.4.1",
+    "browser-sync": "^2.7.6",
+    "cors": "^2.7.1",
+    "express": "^4.12.4",
+    "fs": "0.0.2",
+    "gulp": "^3.8.11",
+    "gulp-concat": "^2.5.2",
+    "gulp-filter": "^2.0.2",
+    "gulp-jshint": "^1.11.0",
+    "gulp-less": "^3.0.3",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.1",
+    "gulp-uglify": "^1.2.0",
+    "jshint-stylish": "^2.0.0",
+    "jsonfile": "^2.0.0",
+    "main-bower-files": "^2.8.0",
+    "mongo": "^0.1.0",
+    "mongoose": "^4.0.3",
+    "mysql": "^2.7.0",
+    "pg": "^4.3.0",
+    "pg-hstore": "^2.3.2",
+    "request": "^2.55.0",
+    "request-promise": "^0.4.2",
+    "sequelize": "^3.1.1",
+    "travis": "^0.1.1"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.7.6",
+    "gulp": "^3.8.11",
+    "gulp-concat": "^2.5.2",
+    "gulp-filter": "^2.0.2",
+    "gulp-jshint": "^1.11.0",
+    "gulp-less": "^3.0.3",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.1",
+    "gulp-uglify": "^1.2.0",
+    "jshint-stylish": "^2.0.0",
+    "main-bower-files": "^2.8.0"
+  }
+}
+

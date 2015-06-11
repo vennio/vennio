@@ -1,0 +1,5 @@
+{
+    "directory": "client/bower_components",
+    "json": "bower.json"
+    "tmp": ".bower-tmp"
+}

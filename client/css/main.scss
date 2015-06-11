@@ -1,0 +1,175 @@
+body {
+  font-family: "aileronultralight", Helvetica, Arial, sans-serif;
+  color: #fff;
+}
+
+.container {
+  max-width: 2000px;
+  width: 95%;
+}
+
+.bg {
+  background: url('../img/bg.jpg') no-repeat 50% 50% fixed;
+  background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  -webkit-background-size: cover;
+}
+
+.nav {
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  padding: 20px 0;
+}
+
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.nav .logo {
+  float: left;
+  font-family: 'aileronbold';
+  font-size: 20px;
+  color: #fff;
+  letter-spacing: 0.1px;
+  line-height: 24px;
+}
+
+.nav .tagline {
+  float: left;
+  margin-left:20px;
+  font-size: 18px;
+  letter-spacing: 1.2px;
+}
+
+.nav nav {
+  float: right;
+  a {
+    margin-left: 30px;
+    font-size: 18px;
+    letter-spacing: 1.2px;
+    word-spacing: 3px;
+  }
+}
+
+.main {
+  margin-top: 15px;
+}
+
+.main-header {
+  background: rgba(58, 58, 58, 0.7);
+  padding: 10px 20px 0 20px;
+  font-size: 20px;
+  color: #FFFFFF;
+  letter-spacing: 1.7px;
+  line-height: 38px;
+  text-transform: uppercase;
+
+  h2 {
+    margin-top:10px;
+    font-size: 20px;
+    letter-spacing: 1.6px;
+    float:left;
+  }
+}
+
+.main-content {
+  padding: 40px 20px;
+  background: rgba(58, 58, 58, 0.5);
+
+  h3 {
+    font-size: 20px;
+    color: #FFFFFF;
+    letter-spacing: 1.7px;
+    line-height: 24px;
+    text-transform: uppercase;
+  }
+}
+
+
+//Filters
+
+.filter {
+  position: relative;
+  display: inline-block;
+}
+
+.filter-button {
+  background-color: #10A2E9 !important;
+  border: none !important;
+  border-radius: 0px !important;
+  padding: 12px 10px;
+  text-decoration: none;
+  color: #fff;
+  margin-left: 2px;
+  &:hover {
+    background: darken(#10A2E9, 5%);
+    color: #ddd;
+  }
+}
+
+.filters {
+  float: right;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  margin-left: 10px;
+  form, span {
+    display: inline;
+  }
+}
+
+.filter-list {
+  position: absolute;
+  display: none;
+  width: 220px;
+  background: #222;
+  margin: 5px 10px;
+  padding-top: 20px;
+
+  ul {
+    list-style-type: none;
+    margin: 0 auto;
+    width: 200px;
+    a {
+        text-decoration: none;
+        font-size: 13px;
+        padding: 5px;
+        &:hover {
+          background: #ccc;
+        }
+      }
+  }
+}
+
+text {
+  fill: #fff;
+  letter-spacing: 1px;
+
+}
+
+//Styles for TT-Menu
+.typeahead {
+  background: #333 !important;
+  font-size: 14px;
+  text-transform: uppercase;
+  border:1px solid #666 !important;
+  border-radius: 0 !important;
+}
+
+.tt-menu {
+  width:200px;
+  background: #333;
+}
+
+.tt-selectable {
+  cursor: pointer;
+  padding: 10px;
+  &:hover {
+    background: #999;
+  }
+}

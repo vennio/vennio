@@ -1,0 +1,3 @@
+var ChartCenterView = ChartView.extend({
+
+});

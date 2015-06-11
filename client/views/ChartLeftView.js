@@ -1,0 +1,3 @@
+var ChartLeftView = ChartView.extend({
+
+});
