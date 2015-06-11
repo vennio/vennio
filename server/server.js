@@ -186,6 +186,8 @@ app.get('/SalaryJobBySkill', function(req, res) {
   });
 });
 
+
+
 // Group Company Count by Skill
 app.get('/CompanyBySkill', function(req, res) {
   sequelize.query("SELECT COUNT(Startups.name) AS Startups, Skills.name AS Skills " + 
@@ -439,6 +441,49 @@ app.get('/FilterCompanyBySkill/:locAndRole', function(req, res) {
     res.send(data.slice(0,35));
   });
 });
+
+// Output total number of jobs
+app.get('/jobs', function(req, res){
+  var query = "SELECT COUNT(Jobs.`name`) as Jobs " + 
+              "FROM Jobs"
+  sequelize.query(query, { type: sequelize.QueryTypes.SELECT })
+    .then(function(data) {
+      res.send(data);
+    });
+});
+
+// Output total number of companies
+app.get('/companies', function(req, res){
+  var query = "SELECT count(*) AS Companies " +
+              "FROM (SELECT Startups.`name` " +
+                    "FROM Jobs, Startups, startup_job " +
+                    "WHERE Jobs.`id` = startup_job.`Job_rowId` " +
+                    "AND Startups.`id`= startup_job.`Startup_rowId` " +
+                    "GROUP BY Startups.`name`) AS temp_table";
+  sequelize.query(query, { type: sequelize.QueryTypes.SELECT })
+    .then(function(data) {
+      res.send(data);
+    });
+});
+
+// Output average salary
+app.get('/avgSal', function(req, res){
+  var query = 
+            "SELECT ((AVG(Jobs.`salary_min`) + AVG(Jobs.`salary_max`) )/ 2) as AvgSal " +
+            "FROM Jobs " +
+            "WHERE Jobs.`currency` = 'USD' " +
+            "AND Jobs.`salary_min` != 0 " +
+            "AND Jobs.`salary_max` != 0 " +
+            "AND Jobs.`salary_min` > 20000 " +
+            "AND Jobs.`salary_min` < 500000 " +
+            "AND Jobs.`salary_max` < 1000000 ";
+  sequelize.query(query, { type: sequelize.QueryTypes.SELECT })
+    .then(function(data) {
+      res.send(data);
+    });
+});
+
+
 
 /******************** END Endpoint Configuration ***************************/
 
