@@ -7,6 +7,7 @@
     "node": "0.10.x"
   },
   "scripts": {
+    "test": "./node_modules/mocha/bin/mocha",
     "start": "node server/server.js",
     "postinstall": "bower install && gulp heroku:production"
   },
@@ -32,6 +33,7 @@
     "jshint-stylish": "^2.0.0",
     "jsonfile": "^2.0.0",
     "main-bower-files": "^2.8.0",
+    "mocha": "^2.2.5",
     "mongo": "^0.1.0",
     "mongoose": "^4.0.3",
     "mysql": "^2.7.0",
@@ -40,8 +42,7 @@
     "request": "^2.55.0",
     "request-promise": "^0.4.2",
     "sequelize": "^3.1.1",
-    "travis": "^0.1.1",
-    "bower": "0.6.x"
+    "travis": "^0.1.1"
   },
   "devDependencies": {
     "browser-sync": "^2.7.6",
