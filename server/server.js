@@ -443,36 +443,6 @@ app.get('/FilterCompanyBySkill/:locAndRole', function(req, res) {
   });
 });
 
-
-
-// // Output total number of jobs and average salary
-// app.get('/SalaryJob', function(req, res){
-//   var query = "SELECT COUNT(Jobs.`name`) as Jobs, ((AVG(Jobs.`salary_min`) + AVG(Jobs.`salary_max`) )/ 2) as AvgSal " + 
-//               "FROM Jobs " +
-//               "WHERE Jobs.`salary_min` < 500000 " + // Filters to validate super high salaries
-//               "AND Jobs.`salary_max` < 500000 ";
-//   sequelize.query(query, { type: sequelize.QueryTypes.SELECT })
-//     .then(function(data) {
-//       res.send(data);
-//     });
-// });
-
-// // Output total number of companies
-// app.get('/Company', function(req, res){
-//   var query = "SELECT count(*) AS Startups " +
-//               "FROM (SELECT Startups.`name` " +
-//                     "FROM Jobs, Startups, startup_job " +
-//                     "WHERE Jobs.`id` = startup_job.`Job_rowId` " +
-//                     "AND Startups.`id`= startup_job.`Startup_rowId` " +
-//                     "AND Jobs.`salary_min` < 500000 " +
-//                     "AND Jobs.`salary_max` < 500000 " +
-//                     "GROUP BY Startups.`name`) AS temp_table";
-//   sequelize.query(query, { type: sequelize.QueryTypes.SELECT })
-//     .then(function(data) {
-//       res.send(data);
-//     });
-// });
-
 // Output total number of jobs, companies, and average salary, 
 app.get('/SalaryJobCompany', function(req, res){
   var querySalaryJob = "SELECT COUNT(Jobs.`name`) as Jobs, ((AVG(Jobs.`salary_min`) + AVG(Jobs.`salary_max`) )/ 2) as AvgSal " + 
@@ -501,50 +471,7 @@ app.get('/SalaryJobCompany', function(req, res){
     });
 });
 
-// // Output total Job Numbers and Average Salary, filter by loc and role
-// app.get('/FilterOverviewJobSalaryBySkill/:locAndRole', function(req, res) {
-//   var filters = req.params.locAndRole.split('|'),
-//       locFilter = filters[0],
-//       roleFilter  = filters[1],
-//       query;
-      
-//   if (locFilter && roleFilter && locFilter.length && roleFilter.length) {
-//     query = "SELECT COUNT(Jobs.`name`) as Jobs, ((AVG(Jobs.`salary_min`) + AVG(Jobs.`salary_max`) )/ 2) as AvgSal " +
-//             "FROM Jobs, Roles, role_job, Locs, loc_job " +
-//             "WHERE Jobs.`salary_min` < 500000 " +
-//             "AND Jobs.`salary_max` < 500000 " +
-//             "AND Jobs.`id` = role_job.`Job_rowId` " +
-//             "AND Roles.`id`= role_job.`Role_rowId` " +
-//             "AND Roles.name = '" + roleFilter + "' " +
-//             "AND Jobs.`id` = loc_job.`Job_rowId` " +
-//             "AND locs.`id`= loc_job.`Loc_rowId` " +
-//             "AND Locs.name = '" + locFilter + "' ";
-//   } else if (locFilter && locFilter.length) {
-//     query = "SELECT COUNT(Jobs.`name`) as Jobs, ((AVG(Jobs.`salary_min`) + AVG(Jobs.`salary_max`) )/ 2) as AvgSal " + 
-//             "FROM Jobs, locs, loc_job " + 
-//             "WHERE Jobs.`salary_min` < 500000 " + 
-//             "AND Jobs.`salary_max` < 500000 " + 
-//             "AND Jobs.`id` = loc_job.`Job_rowId` " + 
-//             "AND locs.`id`= loc_job.`Loc_rowId` " + 
-//             "AND Locs.name = '" + locFilter + "' ";
-//   } else if (roleFilter && roleFilter.length) {
-//     query = "SELECT COUNT(Jobs.`name`) as Jobs, ((AVG(Jobs.`salary_min`) + AVG(Jobs.`salary_max`) )/ 2) as AvgSal " +
-//             "FROM Jobs, Roles, role_job " +
-//             "WHERE Jobs.`salary_min` < 500000 " +
-//             "AND Jobs.`salary_max` < 500000 " +
-//             "AND Jobs.`id` = role_job.`Job_rowId` " +
-//             "AND Roles.`id`= role_job.`Role_rowId` " +
-//             "AND Roles.name = '" + roleFilter + "' ";
-//   } else res.send('invalid input');
-
-// console.log(query);
-//   sequelize.query(query, { type: sequelize.QueryTypes.SELECT })
-//   .then(function(data) {
-//     res.send(data);
-//   });
-// });
-
-// Output total Job Numbers and Average Salary, filter by loc and role
+// Output total number of jobs , average salary, and total number of companies filter by loc and role
 app.get('/FilterOverviewJobSalaryCompanyBySkill/:locAndRole', function(req, res) {
   var filters = req.params.locAndRole.split('|'),
       locFilter = filters[0],
@@ -555,7 +482,7 @@ app.get('/FilterOverviewJobSalaryCompanyBySkill/:locAndRole', function(req, res)
   var select_JobSalary = "SELECT COUNT(Jobs.`name`) as Jobs, ((AVG(Jobs.`salary_min`) + AVG(Jobs.`salary_max`) )/ 2) as AvgSal ";
   var from_JobSalary = "FROM Jobs";
   var where_JobSalary = "WHERE Jobs.`salary_min` < 500000 " +
-            "AND Jobs.`salary_max` < 500000 ";
+                        "AND Jobs.`salary_max` < 500000 ";
 
   if (locFilter.length) {
     from_JobSalary += ", Locs, loc_job ";
@@ -599,10 +526,13 @@ app.get('/FilterOverviewJobSalaryCompanyBySkill/:locAndRole', function(req, res)
 
   var query_Company = select_Company + from_Company + where_Company + group_Company;
 
+  // Used for combining query results
   var results = {};
+  // Query for Job and Salary
   sequelize.query(query_JobSalary, { type: sequelize.QueryTypes.SELECT })
     .then(function(data) {
       _.extend(results, data[0]);
+      // Query for companies
       sequelize.query(query_Company, { type: sequelize.QueryTypes.SELECT })
         .then(function(data) {
           _.extend(results, data[0]);
@@ -611,13 +541,36 @@ app.get('/FilterOverviewJobSalaryCompanyBySkill/:locAndRole', function(req, res)
     });
 });
 
-// Output Total Company Count, filter by location and role
-app.get('/FilterOverviewCompanyBySkill/:locAndRole', function(req, res) {
-  var filters = req.params.locAndRole.split('|'),
-      locFilter = filters[0],
+// Output total Job Numbers and Average Salary, filter by skill and role
+app.get('/FilterOverviewJobSalaryCompanyByLocation/:SkillAndRole', function(req, res) {
+  var filters = req.params.SkillAndRole.split('|'),
+      skillFilter = filters[0],
       roleFilter  = filters[1],
       query;
+      
+// Construct query for total number of jobs and average salary      
+  var select_JobSalary = "SELECT COUNT(Jobs.`name`) as Jobs, ((AVG(Jobs.`salary_min`) + AVG(Jobs.`salary_max`) )/ 2) as AvgSal ";
+  var from_JobSalary = "FROM Jobs";
+  var where_JobSalary = "WHERE Jobs.`salary_min` < 500000 " +
+                        "AND Jobs.`salary_max` < 500000 ";
 
+  if (skillFilter.length) {
+    from_JobSalary += ", Skills, Skill_job ";
+    where_JobSalary += "AND Jobs.`id` = Skill_job.`Job_rowId` " +
+            "AND Skills.`id`= Skill_job.`Skill_rowId` " +
+            "AND Skills.name = '" + skillFilter + "' ";
+  }
+
+  if (roleFilter.length) {
+    from_JobSalary += ", Roles, role_job ";
+    where_JobSalary += "AND Jobs.`id` = role_job.`Job_rowId` " +
+            "AND Roles.`id`= role_job.`Role_rowId` " +
+            "AND Roles.name = '" + roleFilter + "' ";
+  }
+
+  var query_JobSalary = select_JobSalary + from_JobSalary + where_JobSalary;
+
+  // Construct query for total number of companies
   var select_Company = "SELECT count(*) AS Startups ";
   var from_Company = "FROM (SELECT Startups.`name` " +
              "FROM Jobs, Startups, startup_job ";
@@ -627,11 +580,11 @@ app.get('/FilterOverviewCompanyBySkill/:locAndRole', function(req, res) {
               "AND Jobs.`salary_max` < 500000 ";
   var group_Company = "GROUP BY Startups.`name`) AS temp_table ";
 
-  if (locFilter.length) {
-    from_Company += ", Locs, loc_job ";
-    where_Company += "AND Jobs.`id` = loc_job.`Job_rowId` " +
-            "AND locs.`id`= loc_job.`Loc_rowId` " +
-            "AND Locs.name = '" + locFilter + "' ";
+  if (skillFilter.length) {
+    from_Company += ", Skills, skill_job ";
+    where_Company += "AND Jobs.`id` = skill_job.`Job_rowId` " +
+            "AND Skills.`id`= skill_job.`skill_rowId` " +
+            "AND Skills.name = '" + skillFilter + "' ";
   }
 
   if (roleFilter.length) {
@@ -643,112 +596,20 @@ app.get('/FilterOverviewCompanyBySkill/:locAndRole', function(req, res) {
 
   var query_Company = select_Company + from_Company + where_Company + group_Company;
 
-  sequelize.query(query_Company, { type: sequelize.QueryTypes.SELECT })
-  .then(function(data) {
-    res.send(data);
-  });
+  // Used for combining query results
+  var results = {};
+  // Query for Job and Salary
+  sequelize.query(query_JobSalary, { type: sequelize.QueryTypes.SELECT })
+    .then(function(data) {
+      _.extend(results, data[0]);
+      // Query for companies
+      sequelize.query(query_Company, { type: sequelize.QueryTypes.SELECT })
+        .then(function(data) {
+          _.extend(results, data[0]);
+          res.send(results);
+        });
+    });
 });
-
-
-// Output total Job Numbers and Average Salary, filter by skill and role
-app.get('/FilterOverviewJobSalaryByLocation/:SkillAndRole', function(req, res) {
-  var filters = req.params.SkillAndRole.split('|'),
-      skillFilter = filters[0],
-      roleFilter  = filters[1],
-      query;
-      
-  if (skillFilter && roleFilter && skillFilter.length && roleFilter.length) {
-    query = "SELECT COUNT(Jobs.`name`) as Jobs, ((AVG(Jobs.`salary_min`) + AVG(Jobs.`salary_max`) )/ 2) as AvgSal " +
-            "FROM Jobs, Roles, role_job, Skills, skill_job " +
-            "WHERE Jobs.`salary_min` < 500000 " +
-            "AND Jobs.`salary_max` < 500000 " +
-            "AND Jobs.`id` = role_job.`Job_rowId` " +
-            "AND Roles.`id`= role_job.`Role_rowId` " +
-            "AND Roles.name = '" + roleFilter + "' " +
-            "AND Jobs.`id` = skill_job.`Job_rowId` " + 
-            "AND Skills.`id`= skill_job.`Skill_rowId` " + 
-            "AND Skills.name = '" + skillFilter + "' ";
-  } else if (skillFilter && skillFilter.length) {
-    query = "SELECT COUNT(Jobs.`name`) as Jobs, ((AVG(Jobs.`salary_min`) + AVG(Jobs.`salary_max`) )/ 2) as AvgSal " + 
-            "FROM Jobs, Skills, skill_job " + 
-            "WHERE Jobs.`salary_min` < 500000 " + 
-            "AND Jobs.`salary_max` < 500000 " + 
-            "AND Jobs.`id` = skill_job.`Job_rowId` " + 
-            "AND Skills.`id`= skill_job.`Skill_rowId` " + 
-            "AND Skills.name = '" + skillFilter + "' ";
-  } else if (roleFilter && roleFilter.length) {
-    query = "SELECT COUNT(Jobs.`name`) as Jobs, ((AVG(Jobs.`salary_min`) + AVG(Jobs.`salary_max`) )/ 2) as AvgSal " +
-            "FROM Jobs, Roles, role_job " +
-            "WHERE Jobs.`salary_min` < 500000 " +
-            "AND Jobs.`salary_max` < 500000 " +
-            "AND Jobs.`id` = role_job.`Job_rowId` " +
-            "AND Roles.`id`= role_job.`Role_rowId` " +
-            "AND Roles.name = '" + roleFilter + "' ";
-  } else res.send('invalid input');
-
-console.log(query);
-  sequelize.query(query, { type: sequelize.QueryTypes.SELECT })
-  .then(function(data) {
-    res.send(data);
-  });
-});
-
-// Output Total Company Count, filter by skill and role
-app.get('/FilterOverviewCompanyByLocation/:SkillAndRole', function(req, res) {
-  var filters = req.params.SkillAndRole.split('|'),
-      skillFilter = filters[0],
-      roleFilter  = filters[1],
-      query;
-
-  if (skillFilter && roleFilter && skillFilter.length && roleFilter.length) {
-    query = "SELECT count(*) AS Startups " +
-            "FROM (SELECT Startups.`name` " +
-            "FROM Jobs, Startups, startup_job, Roles, role_job, Skills, skill_job " +
-            "WHERE Jobs.`id` = startup_job.`Job_rowId` " +
-            "AND Startups.`id`= startup_job.`Startup_rowId` " +
-            "AND Jobs.`id` = role_job.`Job_rowId` " +
-            "AND Roles.`id` = role_job.`Role_rowId` " +
-            "AND Jobs.`id` = skill_job.`Job_rowId` " +
-            "AND Skills.`id` = skill_job.`Skill_rowId` " +
-            "AND Jobs.`salary_min` < 500000 " +
-            "AND Jobs.`salary_max` < 500000 " +
-            "AND Roles.name = '" + roleFilter + "' " +
-            "AND Skills.name = '" + skillFilter + "' " +
-            "GROUP BY Startups.`name`) AS temp_table ";
-  } else if (skillFilter && skillFilter.length) {
-    query = "SELECT COUNT(*) AS Startups " +
-            "FROM (SELECT Startups.`name` " +
-            "FROM Jobs, Startups, startup_job, Skills, skill_job " +
-            "WHERE Jobs.`id` = startup_job.`Job_rowId` " +
-            "AND Startups.`id`= startup_job.`Startup_rowId` " +
-            "AND Jobs.`id` = skill_job.`Job_rowId` " +
-            "AND Skills.`id` = skill_job.`Skill_rowId` " +
-            "AND Jobs.`salary_min` < 500000 " +
-            "AND Jobs.`salary_max` < 500000 " +
-            "AND Skills.name = '" + skillFilter + "' " +
-            "GROUP BY Startups.`name`) AS temp_table ";
-  } else if (roleFilter && roleFilter.length) {
-    query = "SELECT count(*) AS Startups " +
-            "FROM (SELECT Startups.`name` " +
-            "FROM Jobs, Startups, startup_job, Roles, role_job " +
-            "WHERE Jobs.`id` = startup_job.`Job_rowId` " +
-            "AND Startups.`id`= startup_job.`Startup_rowId` " +
-            "AND Jobs.`id` = role_job.`Job_rowId` " +
-            "AND Roles.`id` = role_job.`Role_rowId` " +
-            "AND Jobs.`salary_min` < 500000 " +
-            "AND Jobs.`salary_max` < 500000 " +
-            "AND Roles.name = '" + roleFilter + "' " +
-            "GROUP BY Startups.`name`) AS temp_table ";
-  } else res.send(401, 'invalid input');
-
-
-  sequelize.query(query, { type: sequelize.QueryTypes.SELECT })
-  .then(function(data) {
-    res.send(data);
-  });
-});
-
-
 
 
 /******************** END Endpoint Configuration ***************************/
