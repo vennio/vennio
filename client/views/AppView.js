@@ -16,8 +16,7 @@ var AppView = Backbone.View.extend({
     this.navView = new NavView();
     this.headerView = new HeaderView();
     this.dashboardView = new DashboardView();
-    this.render();
-    
+
     // var jobSkills = this.fetchData('SalaryJobBySkill');
     // var companySkills = this.fetchData('SalaryJobBySkill');
 
@@ -42,6 +41,7 @@ var AppView = Backbone.View.extend({
   // },
 
   render: function(){
+    console.log("MAIN RENDER");
     this.$el.html(this.template({}));
     this.$('#nav').html(this.navView.$el);
     this.$('#header').html(this.headerView.$el);

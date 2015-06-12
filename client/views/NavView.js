@@ -14,11 +14,15 @@ var NavView = Backbone.View.extend({
 
   events: {
     'click #skillsReport': function() {
-      return console.log('SKILLS');
+      $('#locationsReport').removeClass('nav-highlight');
+      $('#skillsReport').addClass('nav-highlight');
+      return console.log('Switch to Skills View');
     },
 
     'click #locationsReport': function() {
-      return console.log('LOC');
+      $('#skillsReport').removeClass('nav-highlight');
+      $('#locationsReport').addClass('nav-highlight');
+      return console.log('Switch to Locations View');
     }
   },
 
@@ -27,9 +31,9 @@ var NavView = Backbone.View.extend({
   },
 
   render: function() {
+    this.setElement(this.$el);
     this.$el.empty();
     this.$el.append(this.template({}));
-    this.setElement(this.$el);
     return this.$el;
   }
 
