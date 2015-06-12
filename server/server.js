@@ -8,6 +8,7 @@ var fs = require('fs')
 var path = require('path');
 var app = express();
 
+var _ = require('underscore');
 // Enable all cors request
 app.use(cors());
 
@@ -469,6 +470,34 @@ app.get('/Company', function(req, res){
   sequelize.query(query, { type: sequelize.QueryTypes.SELECT })
     .then(function(data) {
       res.send(data);
+    });
+});
+
+// Output total number of jobs, companies, and average salary, 
+app.get('/SalaryJobCompany', function(req, res){
+  var querySalaryJob = "SELECT COUNT(Jobs.`name`) as Jobs, ((AVG(Jobs.`salary_min`) + AVG(Jobs.`salary_max`) )/ 2) as AvgSal " + 
+              "FROM Jobs " +
+              "WHERE Jobs.`salary_min` < 500000 " + // Filters to validate super high salaries
+              "AND Jobs.`salary_max` < 500000 ";
+
+  var queryCompany = "SELECT count(*) AS Startups " +
+              "FROM (SELECT Startups.`name` " +
+                    "FROM Jobs, Startups, startup_job " +
+                    "WHERE Jobs.`id` = startup_job.`Job_rowId` " +
+                    "AND Startups.`id`= startup_job.`Startup_rowId` " +
+                    "AND Jobs.`salary_min` < 500000 " +
+                    "AND Jobs.`salary_max` < 500000 " +
+                    "GROUP BY Startups.`name`) AS temp_table";
+  
+  var results = {};
+  sequelize.query(querySalaryJob, { type: sequelize.QueryTypes.SELECT })
+    .then(function(data) {
+      _.extend(results, data[0]);
+      sequelize.query(queryCompany, { type: sequelize.QueryTypes.SELECT })
+        .then(function(data) {
+          _.extend(results, data[0]);
+          res.send(results);
+        });
     });
 });
 
