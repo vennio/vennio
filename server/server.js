@@ -545,12 +545,13 @@ app.get('/SalaryJobCompany', function(req, res){
 // });
 
 // Output total Job Numbers and Average Salary, filter by loc and role
-app.get('/FilterOverviewJobSalaryBySkill/:locAndRole', function(req, res) {
+app.get('/FilterOverviewJobSalaryCompanyBySkill/:locAndRole', function(req, res) {
   var filters = req.params.locAndRole.split('|'),
       locFilter = filters[0],
       roleFilter  = filters[1],
       query;
-      
+
+  // Construct query for total number of jobs and average salary      
   var select_JobSalary = "SELECT COUNT(Jobs.`name`) as Jobs, ((AVG(Jobs.`salary_min`) + AVG(Jobs.`salary_max`) )/ 2) as AvgSal ";
   var from_JobSalary = "FROM Jobs";
   var where_JobSalary = "WHERE Jobs.`salary_min` < 500000 " +
@@ -572,10 +573,42 @@ app.get('/FilterOverviewJobSalaryBySkill/:locAndRole', function(req, res) {
 
   var query_JobSalary = select_JobSalary + from_JobSalary + where_JobSalary;
 
+  // Construct query for total number of companies
+  var select_Company = "SELECT count(*) AS Startups ";
+  var from_Company = "FROM (SELECT Startups.`name` " +
+             "FROM Jobs, Startups, startup_job ";
+  var where_Company = "WHERE Jobs.`id` = startup_job.`Job_rowId` " +
+              "AND Startups.`id`= startup_job.`Startup_rowId` " +
+              "AND Jobs.`salary_min` < 500000 " +
+              "AND Jobs.`salary_max` < 500000 ";
+  var group_Company = "GROUP BY Startups.`name`) AS temp_table ";
+
+  if (locFilter.length) {
+    from_Company += ", Locs, loc_job ";
+    where_Company += "AND Jobs.`id` = loc_job.`Job_rowId` " +
+            "AND locs.`id`= loc_job.`Loc_rowId` " +
+            "AND Locs.name = '" + locFilter + "' ";
+  }
+
+  if (roleFilter.length) {
+    from_Company += ", Roles, role_job ";
+    where_Company += "AND Jobs.`id` = role_job.`Job_rowId` " +
+            "AND Roles.`id`= role_job.`Role_rowId` " +
+            "AND Roles.name = '" + roleFilter + "' ";
+  }
+
+  var query_Company = select_Company + from_Company + where_Company + group_Company;
+
+  var results = {};
   sequelize.query(query_JobSalary, { type: sequelize.QueryTypes.SELECT })
-  .then(function(data) {
-    res.send(data);
-  });
+    .then(function(data) {
+      _.extend(results, data[0]);
+      sequelize.query(query_Company, { type: sequelize.QueryTypes.SELECT })
+        .then(function(data) {
+          _.extend(results, data[0]);
+          res.send(results);
+        });
+    });
 });
 
 // Output Total Company Count, filter by location and role
