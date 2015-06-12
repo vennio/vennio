@@ -16,31 +16,17 @@ var currencyMultipliers = {"CAD":0.80,"USD":1,"INR":0.016,"EUR":1.09,"CNY":0.16,
 
 /******************** Sequelize and MySQL Integration with Table Schemas ***************************/
 
-// var sequelize = new Sequelize('heroku_9dc6f7a43b753af', 'bae5d84c4b9b57', '49ada8f9', {
-//   host		: 	'us-cdbr-iron-east-02.cleardb.net',
-//   dialect	: 	'mysql',
-//   port		: 	'3306',
-//   logging	: 	console.log,
-
-
-//   pool: {
-//     max 	: 	5,
-//     min 	: 	0,
-//     idle	: 	10000
-//   },
-// });
-
-var sequelize = new Sequelize('vennio', 'root', null, {
-  host    :   'localhost',
-  dialect :   'mysql',
-  port    :   '3306',
-  logging :   console.log,
+var sequelize = new Sequelize('heroku_9dc6f7a43b753af', 'bae5d84c4b9b57', '49ada8f9', {
+  host		: 	'us-cdbr-iron-east-02.cleardb.net',
+  dialect	: 	'mysql',
+  port		: 	'3306',
+  logging	: 	console.log,
 
 
   pool: {
-    max   :   5,
-    min   :   0,
-    idle  :   10000
+    max 	: 	5,
+    min 	: 	0,
+    idle	: 	10000
   },
 });
 
@@ -475,8 +461,7 @@ app.get('/SalaryJobCompany', function(req, res){
 app.get('/FilterOverviewJobSalaryCompanyBySkill/:locAndRole', function(req, res) {
   var filters = req.params.locAndRole.split('|'),
       locFilter = filters[0],
-      roleFilter  = filters[1],
-      query;
+      roleFilter  = filters[1];
 
   // Construct query for total number of jobs and average salary      
   var select_JobSalary = "SELECT COUNT(Jobs.`name`) as Jobs, ((AVG(Jobs.`salary_min`) + AVG(Jobs.`salary_max`) )/ 2) as AvgSal ";
@@ -545,8 +530,7 @@ app.get('/FilterOverviewJobSalaryCompanyBySkill/:locAndRole', function(req, res)
 app.get('/FilterOverviewJobSalaryCompanyByLocation/:SkillAndRole', function(req, res) {
   var filters = req.params.SkillAndRole.split('|'),
       skillFilter = filters[0],
-      roleFilter  = filters[1],
-      query;
+      roleFilter  = filters[1];
       
 // Construct query for total number of jobs and average salary      
   var select_JobSalary = "SELECT COUNT(Jobs.`name`) as Jobs, ((AVG(Jobs.`salary_min`) + AVG(Jobs.`salary_max`) )/ 2) as AvgSal ";
