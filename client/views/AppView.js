@@ -16,6 +16,19 @@ var AppView = Backbone.View.extend({
     this.navView = new NavView();
     this.headerView = new HeaderView();
     this.dashboardView = new DashboardView({type: this.dashboardType});
+
+    this.listenTo(Backbone, 'renderSkillsReport', function () {
+      this.dashboardType = 'SalaryJobBySkill';
+      this.dashboardView = new DashboardView({type: this.dashboardType});
+      this.$('#dashboard').html(this.dashboardView.$el);
+    }, this);
+
+    this.listenTo(Backbone, 'renderLocationsReport', function () {
+      this.dashboardType = 'SalaryJobByLocation';
+      this.dashboardView = new DashboardView({type: this.dashboardType});
+      this.$('#dashboard').html(this.dashboardView.$el);
+    }, this);
+
   },
 
   render: function(){

@@ -4,7 +4,7 @@ var ChartView = Backbone.View.extend({
 
   template: _.template('<div class="barchart one-third column">' +
           '<h3><%= title %></h3>' +
-          '<div class="<%= nodeId %>" id="<%= nodeId %>">' +
+          '<div class="wrapper1" id="<%= nodeId %>">' +
           '</div>' +
         '</div>'),
 
@@ -15,8 +15,9 @@ var ChartView = Backbone.View.extend({
     this.title = config.title;
     this.nodeId = config.nodeId;
     this.model = config.model;
+    console.log('MODEL',this.model.collection);
     this.data = this.model.collection.toJSON();
-    this.width = 500;
+    this.width = 400;
     this.height = config.jobConfig.height || 700;
     this.offset = config.jobConfig.offset || 19;
     this.colors = config.jobConfig.colors || ['#000000'];
@@ -25,7 +26,12 @@ var ChartView = Backbone.View.extend({
     this.dataLabel = config.jobConfig.dataLabel;
 
     this.element = document.createElement("div")
-
+    this.canvas = d3.select(this.element)
+      .append('svg')
+      .attr({
+        width: this.width,
+        height: this.height
+      });
 
     return this.createSalaryJobCharts(config.jobConfig.group, this);
 
@@ -93,33 +99,6 @@ var ChartView = Backbone.View.extend({
   },
 
   draw: function(data) {
-
-    console.log(this.$('.barchart').html);
-
-    this.width = 400;
-    console.log(this.$('.barchart').width());
-
-    // var aspect = 960 / 500,
-    //     chart = $("#"+this.nodeId);
-    //     container = chart.parent();
-
-    this.canvas = d3.select(this.element)
-      .append('svg')
-      .attr({
-        id: "chart"+this.nodeId,
-        width: 400,
-        height: 700,
-        // viewBox: "0 0 960 500",
-        // preserveAspectRatio: "none"
-      });
-
-    // $(window).on("resize", function() {
-    //     var targetWidth = chart.parent().width();
-    //     var targetWidth = container.width();
-    //     chart.attr("width", targetWidth);
-    //     chart.attr("height", 700);
-    // });
-
     if (data.metrics.length === 0) {
       this.canvas.selectAll('g').remove();
       $('.barchart').text('No Results - Please Try Another Query');
@@ -206,6 +185,7 @@ var ChartView = Backbone.View.extend({
     this.$el.empty();
     this.$el.append(this.template({nodeId: this.nodeId, title: this.title}));
     this.$('#' + this.nodeId).append(this.element);
+    console.log('ELLL', this.el);
     return this.$el;
 
   }
