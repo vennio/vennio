@@ -13,9 +13,10 @@ var AppView = Backbone.View.extend({
 
 
   initialize: function(params){
+    this.dashboardType = 'SalaryJobBySkill',
     this.navView = new NavView();
     this.headerView = new HeaderView();
-    this.dashboardView = new DashboardView();
+    this.dashboardView = new DashboardView({type: this.dashboardType});
 
     // var jobSkills = this.fetchData('SalaryJobBySkill');
     // var companySkills = this.fetchData('SalaryJobBySkill');
@@ -41,14 +42,12 @@ var AppView = Backbone.View.extend({
   // },
 
   render: function(){
-    console.log("MAIN RENDER");
     this.$el.html(this.template({}));
     this.$('#nav').html(this.navView.$el);
     this.$('#header').html(this.headerView.$el);
     this.$('#dashboard').html(this.dashboardView.$el);
     this.navView.render();
     this.headerView.render();
-    this.dashboardView.render();
     return this.$el;
   }
 
