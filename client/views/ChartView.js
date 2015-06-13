@@ -6,7 +6,7 @@ var ChartView = Backbone.View.extend({
           '<h3><%= title %></h3>' +
           '<div class="<%= nodeId %>" id="<%= nodeId %>">' +
           '</div>' +
-          '</div>'),
+        '</div>'),
 
   apiEndpoint: 'http://vennio.herokuapp.com/',
   numOfDatapoints: 10,
@@ -83,7 +83,7 @@ var ChartView = Backbone.View.extend({
       data.metrics = data.metrics.map(function(m) {
         return Math.round(m / 1000);
       });
-    }
+      }
     return context.render(data);
   },
 
@@ -175,7 +175,7 @@ var ChartView = Backbone.View.extend({
       .attr('id', 'yaxis')
       .style({'fill':'#fff', 'font-size':'14px'})
       .call(this.yAxis);
-    
+
     //ANIMATION
     d3.select(this.element).selectAll('rect')
       .transition()
