@@ -26,7 +26,7 @@ var NavView = Backbone.View.extend({
     }
   },
 
-  initialize: function(params){
+  initialize: function(params) {
     // this.render();
   },
 
