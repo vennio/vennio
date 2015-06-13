@@ -21,13 +21,14 @@ gulp.task('js', function() {
     'client/bower_components/backbone/backbone.js',
     'client/bower_components/pace/pace.js',
     'client/bower_components/typeahead.js/dist/typeahead.bundle.js',
+    'client/models/DataModel.js',
+    'client/collections/DataCollection.js',
+    'client/models/WrapperModel.js',
     'client/views/ChartView.js',
-    // 'client/views/ChartLeftView.js',
     'client/views/DashboardView.js',
     'client/views/NavView.js',
     'client/views/HeaderView.js',
     'client/views/AppView.js'
-    // 'client/js/*.js'
     ])
     .pipe(concat('app.js'))
     .pipe(gulp.dest('build/js'))
@@ -94,8 +95,9 @@ gulp.task('bs-reload', function() {
 
 gulp.task('default', ['sass', 'css', 'fonts', 'bsync', 'js', 'html', 'img'], function() {
 
-  gulp.watch(['client/js/*.js'], ['jshint', 'js', 'bs-reload']);
+  gulp.watch(['client/js/*.js'], ['js', 'bs-reload']);
   gulp.watch(['client/css/**/*.scss'], ['sass']);
+  gulp.watch(['client/views/*.js'], ['js']);
   gulp.watch(['client/*.html'], ['html', 'bs-reload']);
 
 });

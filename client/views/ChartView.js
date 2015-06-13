@@ -1,34 +1,36 @@
 var ChartView = Backbone.View.extend({
 
+  colors: ['#19C999','#9686E9','#E65E5E'],
+
   template: _.template('<div class="barchart one-third column">' +
-          '<h3># Of Jobs</h3>' +
-          '<div class="wrapper1" id="wrapper1">' +
+          '<h3><%= title %></h3>' +
+          '<div class="<%= nodeId %>" id="<%= nodeId %>">' +
           '</div>' +
-        '</div>'),
+          '</div>'),
 
   apiEndpoint: 'http://vennio.herokuapp.com/',
   numOfDatapoints: 10,
 
   initialize: function(config) {
+    this.title = config.title;
+    this.nodeId = config.nodeId;
+    this.model = config.model;
+    this.data = this.model.collection.toJSON();
+    this.width = 500;
+    this.height = config.jobConfig.height || 700;
+    this.offset = config.jobConfig.offset || 19;
+    this.colors = config.jobConfig.colors || ['#000000'];
+    this.selector = config.jobConfig.selector;
+    this.metricLabel = config.jobConfig.metricLabel;
+    this.dataLabel = config.jobConfig.dataLabel;
 
-    this.width = config.width || 400;
-    this.height = config.height || 700;
-    this.offset = config.offset || 19;
-    this.colors = config.colors || ['#000000'];
-    this.selector = config.selector;
-    this.metricLabel = config.metricLabel;
+    this.element = document.createElement("div")
 
-    this.canvas = d3.select(document.createElement("div"))
-      .append('svg')
-      .attr({
-        width: this.width,
-        height: this.height
-      });
-      // this.render();
 
-    // console.log(this.canvas);
-    this.createSalaryJobCharts('SalaryJobBySkill', 'skill', this);
+    return this.createSalaryJobCharts(config.jobConfig.group, this);
 
+    // if (this.model)
+    //   this.model.on("sync", _.bind(this.render, this));
   },
 
   generateCompareFunction: function(metric) {
@@ -58,14 +60,13 @@ var ChartView = Backbone.View.extend({
 
     // Take a subset of data based on the limit
     var dataLimited = data.slice(0, limit);
-
     // categories are the yaxis labels
     input.categories = [''].concat(
       dataLimited.map(function(item) {
         return item[group];
       })
-
     );
+
 
     input.metrics = dataLimited.map(function(item) {
       return item[metric];
@@ -76,24 +77,49 @@ var ChartView = Backbone.View.extend({
   },
 
 
-  createSalaryJobCharts: function(endpoint, group, context) {
-    $.get(this.apiEndpoint + endpoint, function(data, status) {
-      if (status === 'success') {
-        var jobData = context.generateInput('Jobs', group, this.numOfDatapoints, data, context);
-        context.render(jobData);
-      }
-    });
+  createSalaryJobCharts: function(group, context) {
+    var data = context.generateInput(this.dataLabel, group, context.numOfDatapoints, this.data, context);
+    if (this.dataLabel === 'AvgSal') {
+      data.metrics = data.metrics.map(function(m) {
+        return Math.round(m / 1000);
+      });
+    }
+    return context.render(data);
   },
 
   render: function(data) {
-    if (this.collection)
-      this.data = this.collection.toJSON();
     this.$('#wrapper1').empty();
     return this.draw(data);
   },
 
   draw: function(data) {
-    debugger;
+
+    console.log(this.$('.barchart').html);
+
+    this.width = 400;
+    console.log(this.$('.barchart').width());
+
+    // var aspect = 960 / 500,
+    //     chart = $("#"+this.nodeId);
+    //     container = chart.parent();
+
+    this.canvas = d3.select(this.element)
+      .append('svg')
+      .attr({
+        id: "chart"+this.nodeId,
+        width: 400,
+        height: 700,
+        // viewBox: "0 0 960 500",
+        // preserveAspectRatio: "none"
+      });
+
+    // $(window).on("resize", function() {
+    //     var targetWidth = chart.parent().width();
+    //     var targetWidth = container.width();
+    //     chart.attr("width", targetWidth);
+    //     chart.attr("height", 700);
+    // });
+
     if (data.metrics.length === 0) {
       this.canvas.selectAll('g').remove();
       $('.barchart').text('No Results - Please Try Another Query');
@@ -124,6 +150,7 @@ var ChartView = Backbone.View.extend({
       .tickSize(0)
       .tickFormat(function(d, i) { return data.categories[i]; });
 
+
     var bars = this.canvas.append('g')
       .attr('transform', 'translate(0,0)')
       .attr('class', 'bars')
@@ -148,18 +175,17 @@ var ChartView = Backbone.View.extend({
       .attr('id', 'yaxis')
       .style({'fill':'#fff', 'font-size':'14px'})
       .call(this.yAxis);
-  
+    
     //ANIMATION
-    d3.select(this.selector).selectAll('rect')
+    d3.select(this.element).selectAll('rect')
       .transition()
       .duration(1000)
-      .attr({width: function(d) { console.log('XSCALE',_.this.xscale); return _this.xscale(d); }});
+      .attr({width: function(d) {return _this.xscale(d); }});
 
-    var labels = d3.selectAll('.bars')
+    var labels = d3.select(this.element).selectAll('.bars')
       .selectAll('text')
       .data(data.metrics)
       .enter();
-
 
     labels.append('text')
       .attr('text-anchor', 'end')
@@ -177,9 +203,10 @@ var ChartView = Backbone.View.extend({
       .attr({x:function(d) {return _this.xscale(d) - 10; }, y:function(d, i) { return _this.yscale(i) + 49; }})
       .text(this.metricLabel)
 
-    this.$el.append(this.selector);
-    console.log(this.canvas);
-    return this.$el; 
+    this.$el.empty();
+    this.$el.append(this.template({nodeId: this.nodeId, title: this.title}));
+    this.$('#' + this.nodeId).append(this.element);
+    return this.$el;
 
   }
 
