@@ -9,18 +9,12 @@ var DashboardView = Backbone.View.extend({
     this.dashboardType = params.type;
 
     if (params.filter) {
-      console.log(params.filter)
-      console.log(params.filter.skill)
-      console.log(params.filter.location)
       if (this.dashboardType === 'SalaryJobBySkill') {
         this.jobSalaryEndpoint = 'FilterJobSalaryBySkill/' + params.filter.location + '|' + params.filter.role;
         this.companyEndpoint = 'FilterCompanyBySkill/' + params.filter.location + '|' + params.filter.role;
-        console.log('FIRST', this.jobSalaryEndpoint);
-        console.log('FIRST', this.companyEndpoint);
       } else {
         this.jobSalaryEndpoint = 'FilterJobSalaryByLocation/' + params.filter.skill + '|' + params.filter.role;
         this.companyEndpoint = 'FilterCompanyByLocation/' + params.filter.skill + '|' + params.filter.role;
-        console.log('SECOND',this.jobSalaryEndpoint);
       }
     } else if (this.dashboardType === 'SalaryJobBySkill') {
       this.group = 'Skill';
