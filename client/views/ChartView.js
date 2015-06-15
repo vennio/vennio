@@ -72,7 +72,6 @@ var ChartView = Backbone.View.extend({
       })
     );
 
-
     input.metrics = dataLimited.map(function(item) {
       return item[metric];
     });
@@ -164,6 +163,7 @@ var ChartView = Backbone.View.extend({
       .selectAll('text')
       .data(data.metrics)
       .enter();
+
 
     labels.append('text')
       .attr('text-anchor', 'end')

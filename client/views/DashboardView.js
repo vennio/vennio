@@ -10,9 +10,11 @@ var DashboardView = Backbone.View.extend({
 
     if (params.filter) {
       if (this.dashboardType === 'SalaryJobBySkill') {
+        this.group = 'Skill';
         this.jobSalaryEndpoint = 'FilterJobSalaryBySkill/' + params.filter.location + '|' + params.filter.role;
         this.companyEndpoint = 'FilterCompanyBySkill/' + params.filter.location + '|' + params.filter.role;
       } else {
+        this.group = 'Location';
         this.jobSalaryEndpoint = 'FilterJobSalaryByLocation/' + params.filter.skill + '|' + params.filter.role;
         this.companyEndpoint = 'FilterCompanyByLocation/' + params.filter.skill + '|' + params.filter.role;
       }
@@ -25,9 +27,11 @@ var DashboardView = Backbone.View.extend({
       this.jobSalaryEndpoint = 'SalaryJobByLocation';
       this.companyEndpoint = 'CompanyByLocation';
     }
-      
+
+    this.companyGroup = this.group+'s';
     this.initializeModels();
-	},
+  },
+
 
   initializeModels: function() {
 
@@ -37,11 +41,11 @@ var DashboardView = Backbone.View.extend({
     var _this = this;
     return companyModel.fetchCurrent({success: function(model, response, options) {
       companyModel.parse(response);
-      _this.chart2 = new ChartView({jobConfig: {colors: ['#9686E9'],metricLabel: 'Companies', group: this.group, dataLabel: 'Startups'}, model: companyModel, nodeId: 'wrapper2', title:'# OF COMPANIES'});
+      _this.chart2 = new ChartView({jobConfig: {colors: ['#9686E9'],metricLabel: 'Companies', group: _this.companyGroup, dataLabel: 'Startups'}, model: companyModel, nodeId: 'wrapper2', title:'# OF COMPANIES'});
       return jobSalaryModel.fetchCurrent({success: function(model, response, options) {
         jobSalaryModel.parse(response);
-        _this.chart1 = new ChartView({jobConfig: {colors: ['#19C999'],metricLabel: 'Jobs', group: this.group, dataLabel: 'Jobs'}, model: jobSalaryModel, nodeId: 'wrapper1', title:'# OF JOBS'});
-        _this.chart3 = new ChartView({jobConfig: {colors: ['#E65E5E'],metricLabel: 'Dollars (Thousands)', group: this.group, dataLabel: 'AvgSal'}, model: jobSalaryModel, nodeId: 'wrapper3', title:'SALARY'});
+        _this.chart1 = new ChartView({jobConfig: {colors: ['#19C999'],metricLabel: 'Jobs', group: _this.group, dataLabel: 'Jobs'}, model: jobSalaryModel, nodeId: 'wrapper1', title:'# OF JOBS'});
+        _this.chart3 = new ChartView({jobConfig: {colors: ['#E65E5E'],metricLabel: 'Dollars (Thousands)', group: _this.group, dataLabel: 'AvgSal'}, model: jobSalaryModel, nodeId: 'wrapper3', title:'SALARY'});
         _this.$el.empty();
         _this.$el.append(_this.template({}));
         _this.$('#dashboard-content').empty();
