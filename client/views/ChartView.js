@@ -72,6 +72,7 @@ var ChartView = Backbone.View.extend({
       })
     );
 
+    console.log('group',group)
 
     input.metrics = dataLimited.map(function(item) {
       return item[metric];
@@ -98,6 +99,7 @@ var ChartView = Backbone.View.extend({
   },
 
   draw: function(data) {
+    console.log(data);
     if (data.metrics.length === 0) {
       this.canvas.selectAll('g').remove();
       $('.barchart').text('No Results - Please Try Another Query');
@@ -164,6 +166,7 @@ var ChartView = Backbone.View.extend({
       .selectAll('text')
       .data(data.metrics)
       .enter();
+
 
     labels.append('text')
       .attr('text-anchor', 'end')
