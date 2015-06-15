@@ -7,15 +7,32 @@ var DashboardView = Backbone.View.extend({
 
 	initialize: function(params) {
     this.dashboardType = params.type;
-    this.group = 'Skill';
-    if (this.dashboardType === 'SalaryJobBySkill')
-      this.initializeModels();
+
+    if (params.filter) {
+      if (this.dashboardType === 'SalaryJobBySkill') {
+        this.jobSalaryEndpoint = 'FilterJobSalaryBySkill/' + params.filter.location + '|' + params.filter.role;
+        this.companyEndpoint = 'FilterCompanyBySkill/' + params.filter.location + '|' + params.filter.role;
+      } else {
+        this.jobSalaryEndpoint = 'FilterJobSalaryByLocation/' + params.filter.skill + '|' + params.filter.role;
+        this.companyEndpoint = 'FilterCompanyByLocation/' + params.filter.skill + '|' + params.filter.role;
+      }
+    } else if (this.dashboardType === 'SalaryJobBySkill') {
+      this.group = 'Skill';
+      this.jobSalaryEndpoint = 'SalaryJobBySkill';
+      this.companyEndpoint = 'CompanyBySkill';
+    } else {
+      this.group = 'Location';
+      this.jobSalaryEndpoint = 'SalaryJobByLocation';
+      this.companyEndpoint = 'CompanyByLocation';
+    }
+      
+    this.initializeModels();
 	},
 
   initializeModels: function() {
 
-    var companyModel = new WrapperModel({endpoint: 'CompanyBySkill'});
-    var jobSalaryModel = new WrapperModel({endpoint: 'SalaryJobBySkill'});
+    var companyModel = new WrapperModel({endpoint: this.companyEndpoint});
+    var jobSalaryModel = new WrapperModel({endpoint: this.jobSalaryEndpoint});
 
     var _this = this;
     return companyModel.fetchCurrent({success: function(model, response, options) {
@@ -29,7 +46,6 @@ var DashboardView = Backbone.View.extend({
         _this.$el.append(_this.template({}));
         _this.$('#dashboard-content').empty();
         _this.$('#dashboard-content').html([_this.chart1.$el,_this.chart2.$el,_this.chart3.$el]);
-        console.log('in dashboard', _this.el);
         return _this.$el;
       }});
     }});

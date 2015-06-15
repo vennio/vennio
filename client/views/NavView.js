@@ -6,24 +6,27 @@ var NavView = Backbone.View.extend({
         '<a href="#" class="logo">Vennio</a>' +
         '<span class="tagline">The Current State of Tech Startup Jobs</span>' +
        ' <nav>' +
-          '<a href="#" id="skillsReport">Skills Report</a>' +
+          '<a href="#" class="nav-highlight" id="skillsReport">Skills Report</a>' +
           '<a href="#" id="locationsReport">Locations Report</a>' +
         '</nav>' +
       '</div>' +
     '</div>'),
 
   events: {
-    'click #skillsReport': function() {
-      $('#locationsReport').removeClass('nav-highlight');
-      $('#skillsReport').addClass('nav-highlight');
-      return console.log('Switch to Skills View');
-    },
+          "click #skillsReport": 'renderSkillsReport',
+          "click #locationsReport": 'renderLocationsReport'
+      },
 
-    'click #locationsReport': function() {
-      $('#skillsReport').removeClass('nav-highlight');
-      $('#locationsReport').addClass('nav-highlight');
-      return console.log('Switch to Locations View');
-    }
+  renderSkillsReport: function() {
+    $('#locationsReport').removeClass('nav-highlight');
+    $('#skillsReport').addClass('nav-highlight');
+    Backbone.trigger('renderSkillsReport');
+  },
+
+  renderLocationsReport: function() {
+    $('#skillsReport').removeClass('nav-highlight');
+    $('#locationsReport').addClass('nav-highlight');
+    Backbone.trigger('renderLocationsReport');
   },
 
   initialize: function(params) {
