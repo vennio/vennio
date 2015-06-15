@@ -7,8 +7,22 @@ var DashboardView = Backbone.View.extend({
 
 	initialize: function(params) {
     this.dashboardType = params.type;
-    
-    if (this.dashboardType === 'SalaryJobBySkill') {
+
+    if (params.filter) {
+      console.log(params.filter)
+      console.log(params.filter.skill)
+      console.log(params.filter.location)
+      if (this.dashboardType === 'SalaryJobBySkill') {
+        this.jobSalaryEndpoint = 'FilterJobSalaryBySkill/' + params.filter.location + '|' + params.filter.role;
+        this.companyEndpoint = 'FilterCompanyBySkill/' + params.filter.location + '|' + params.filter.role;
+        console.log('FIRST', this.jobSalaryEndpoint);
+        console.log('FIRST', this.companyEndpoint);
+      } else {
+        this.jobSalaryEndpoint = 'FilterJobSalaryByLocation/' + params.filter.skill + '|' + params.filter.role;
+        this.companyEndpoint = 'FilterCompanyByLocation/' + params.filter.skill + '|' + params.filter.role;
+        console.log('SECOND',this.jobSalaryEndpoint);
+      }
+    } else if (this.dashboardType === 'SalaryJobBySkill') {
       this.group = 'Skill';
       this.jobSalaryEndpoint = 'SalaryJobBySkill';
       this.companyEndpoint = 'CompanyBySkill';
@@ -38,7 +52,6 @@ var DashboardView = Backbone.View.extend({
         _this.$el.append(_this.template({}));
         _this.$('#dashboard-content').empty();
         _this.$('#dashboard-content').html([_this.chart1.$el,_this.chart2.$el,_this.chart3.$el]);
-        console.log('in dashboard', _this.el);
         return _this.$el;
       }});
     }});

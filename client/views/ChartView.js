@@ -15,7 +15,6 @@ var ChartView = Backbone.View.extend({
     this.title = config.title;
     this.nodeId = config.nodeId;
     this.model = config.model;
-    console.log('MODEL',this.model.collection);
     this.data = this.model.collection.toJSON();
     this.width = 400;
     this.height = config.jobConfig.height || 700;
@@ -185,7 +184,6 @@ var ChartView = Backbone.View.extend({
     this.$el.empty();
     this.$el.append(this.template({nodeId: this.nodeId, title: this.title}));
     this.$('#' + this.nodeId).append(this.element);
-    console.log('ELLL', this.el);
     return this.$el;
 
   }
