@@ -30,6 +30,7 @@ var HeaderView = Backbone.View.extend({
       $('.twitter-typeahead input.tt-input').each(function() {
         map[$(this).attr('name')] = $(this).val();
       });
+
       Backbone.trigger('filterReport', map);
     }
   },
