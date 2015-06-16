@@ -94,7 +94,9 @@ body {
   }
 }
 
-
+.barchart {
+  margin: 0 2.5%;
+}
 //Filters
 
 .filter {
@@ -126,6 +128,10 @@ body {
   form, span {
     display: inline;
   }
+}
+
+.filters span {
+  margin-right: 7px;
 }
 
 .filter-list {
