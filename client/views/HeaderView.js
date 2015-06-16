@@ -2,7 +2,7 @@ var HeaderView = Backbone.View.extend({
 
   template: _.template(
     '<div class="row main-header">' +
-       '<h2>Skills Dashboard</h2>' +
+       '<h2><%= header %> Dashboard</h2>' +
        '<div class="filters">' +
        '<span>Filter By:</span>' +
        '<form>' +
@@ -17,9 +17,11 @@ var HeaderView = Backbone.View.extend({
     if (params.dashboardType === 'SalaryJobBySkill') {
       this.inputType = 'location';
       this.inputType_upper = 'Location';
+      this.header = 'Skills';
     } else {
       this.inputType = 'skill';
       this.inputType_upper = 'Skill';
+      this.header = 'Locations';
     }
   },
 
@@ -39,15 +41,17 @@ var HeaderView = Backbone.View.extend({
     if (params.dashboardType === 'SalaryJobBySkill') {
       this.inputType = 'location';
       this.inputType_upper = 'Location';
+      this.header = 'Skills';
     } else {
       this.inputType = 'skill';
       this.inputType_upper = 'Skill';
+      this.header = 'Locations';
     }
 
     this.$el.empty();
-    this.$el.append(this.template({inputType: this.inputType, inputType_upper: this.inputType_upper}));
+    this.$el.append(this.template({inputType: this.inputType, inputType_upper: this.inputType_upper, header: this.header}));
 
-    var skillArray = ['javascript', 'python'];
+    var skillArray = ['javascript', 'python', 'java', 'c++', 'scala', 'ruby', 'php'];
     var locArray = ['san_francisco', 'new_york,_ny', 'bangalore', 'london', 'los_angeles', 'boston', 'new_delhi', 'mumbai', 'palo_alto', 'toronto', 'washington,_dc', 'chicago', 'mountain_view', 'berlin', 'seattle', 'gurgaon', 'austin', 'silicon_valley', 'amsterdam', 'singapore', 'vancouver', 'cambridge,_ma', 'montreal', 'san_mateo', 'hyderabad', 'paris', 'san_diego', 'santa_monica', 'redwood_city', 'atlanta', 'india', 'sunnyvale', 'hong_kong', 'united_states', 'san_jose', 'philadelphia', 'oakland', 'san_francisco_bay_area', 'menlo_park', 'sydney', 'pune', 'remote', 'barcelona', 'denver', 'united_kingdom', 'dallas', 'noida', 'boulder', 'santa_clara,_ca', 'berkeley', 'earth', 'brooklyn', 'miami', 'istanbul', 'houston', 'munich', 'tel_aviv_yafo', 'new_york', 'melbourne', 'beijing', 'cincinnati', 'florida', 'detroit', 'baltimore', 'phoenix', 'madrid', 'pittsburgh', 'las_vegas', 'durham', 'irvine', 'santa_barbara', 'dubai', 'europe', 'anywhere', 'salt_lake_city', 'bangkok', 'portland', 'pasadena,_ca', 'newport_beach', 'hamburg', 'madras', 'stockholm', 'los_altos', 'raleigh', 'orange_county'];
     var roleArray = ['office_manager', 'frontend_developer', 'devops', 'sales', 'operations', 'finance', 'designer', 'hardware_engineer', 'product_manager', 'data_scientist', 'mobile_developer', 'full_stack_developer', 'attorney', 'human_resources', 'marketing', 'developer', 'backend_developer'];
 
