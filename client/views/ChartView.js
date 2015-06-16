@@ -16,15 +16,14 @@ var ChartView = Backbone.View.extend({
     this.nodeId = config.nodeId;
     this.model = config.model;
     this.data = this.model.collection.toJSON();
-    this.width = 400;
+    this.width = (window.innerWidth - 200) / 3;
     this.height = config.jobConfig.height || 700;
     this.offset = config.jobConfig.offset || 19;
     this.colors = config.jobConfig.colors || ['#000000'];
     this.selector = config.jobConfig.selector;
     this.metricLabel = config.jobConfig.metricLabel;
     this.dataLabel = config.jobConfig.dataLabel;
-
-    this.element = document.createElement("div")
+    this.element = document.createElement('div');
     this.canvas = d3.select(this.element)
       .append('svg')
       .attr({
@@ -87,7 +86,8 @@ var ChartView = Backbone.View.extend({
       data.metrics = data.metrics.map(function(m) {
         return Math.round(m / 1000);
       });
-      }
+    }
+
     return context.render(data);
   },
 
@@ -125,8 +125,11 @@ var ChartView = Backbone.View.extend({
       .orient('right')
       .scale(this.yscale)
       .tickSize(0)
-      .tickFormat(function(d, i) { return data.categories[i]; });
-
+      .tickFormat(function(d, i) {
+        if (data.categories[i] !== ' ' && data.categories[i] !== undefined) {
+          return data.categories[i].split('_').join(' ');
+        }
+      });
 
     var bars = this.canvas.append('g')
       .attr('transform', 'translate(0,0)')
@@ -163,7 +166,6 @@ var ChartView = Backbone.View.extend({
       .selectAll('text')
       .data(data.metrics)
       .enter();
-
 
     labels.append('text')
       .attr('text-anchor', 'end')

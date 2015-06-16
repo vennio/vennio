@@ -45,7 +45,7 @@ var DashboardView = Backbone.View.extend({
       return jobSalaryModel.fetchCurrent({success: function(model, response, options) {
         jobSalaryModel.parse(response);
         _this.chart1 = new ChartView({jobConfig: {colors: ['#19C999'],metricLabel: 'Jobs', group: _this.group, dataLabel: 'Jobs'}, model: jobSalaryModel, nodeId: 'wrapper1', title:'# OF JOBS'});
-        _this.chart3 = new ChartView({jobConfig: {colors: ['#E65E5E'],metricLabel: 'Dollars (Thousands)', group: _this.group, dataLabel: 'AvgSal'}, model: jobSalaryModel, nodeId: 'wrapper3', title:'SALARY'});
+        _this.chart3 = new ChartView({jobConfig: {colors: ['#E65E5E'],metricLabel: 'K ($)', group: _this.group, dataLabel: 'AvgSal'}, model: jobSalaryModel, nodeId: 'wrapper3', title:'SALARY'});
         _this.$el.empty();
         _this.$el.append(_this.template({}));
         _this.$('#dashboard-content').empty();
