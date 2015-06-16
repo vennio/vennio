@@ -23,8 +23,7 @@ var ChartView = Backbone.View.extend({
     this.selector = config.jobConfig.selector;
     this.metricLabel = config.jobConfig.metricLabel;
     this.dataLabel = config.jobConfig.dataLabel;
-
-    this.element = document.createElement("div")
+    this.element = document.createElement('div');
     this.canvas = d3.select(this.element)
       .append('svg')
       .attr({
