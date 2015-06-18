@@ -32,9 +32,6 @@ var ChartView = Backbone.View.extend({
       });
 
     return this.createSalaryJobCharts(config.jobConfig.group, this);
-
-    // if (this.model)
-    //   this.model.on("sync", _.bind(this.render, this));
   },
 
   generateCompareFunction: function(metric) {
@@ -47,7 +44,6 @@ var ChartView = Backbone.View.extend({
         return 1;
       }
     };
-
   },
 
 /*
@@ -70,15 +66,11 @@ var ChartView = Backbone.View.extend({
         return item[group];
       })
     );
-
     input.metrics = dataLimited.map(function(item) {
       return item[metric];
     });
-
-    // Changed this based on UI style. Chit Chat Time: what's up Brant? How is your day?
     return input;
   },
-
 
   createSalaryJobCharts: function(group, context) {
     var data = context.generateInput(this.dataLabel, group, context.numOfDatapoints, this.data, context);
@@ -87,7 +79,6 @@ var ChartView = Backbone.View.extend({
         return Math.round(m / 1000);
       });
     }
-
     return context.render(data);
   },
 
@@ -187,8 +178,5 @@ var ChartView = Backbone.View.extend({
     this.$el.append(this.template({nodeId: this.nodeId, title: this.title}));
     this.$('#' + this.nodeId).append(this.element);
     return this.$el;
-
   }
-
-
 });
