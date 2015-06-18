@@ -8,7 +8,6 @@ var fs = require('fs');
 var path = require('path');
 var app = express();
 
-var _ = require('underscore');
 // Enable all cors request
 app.use(cors());
 
