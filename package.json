@@ -32,13 +32,7 @@
     "jshint-stylish": "^2.0.0",
     "jsonfile": "^2.0.0",
     "main-bower-files": "^2.8.0",
-    "mongo": "^0.1.0",
-    "mongoose": "^4.0.3",
     "mysql": "^2.7.0",
-    "pg": "^4.3.0",
-    "pg-hstore": "^2.3.2",
-    "request": "^2.55.0",
-    "request-promise": "^0.4.2",
     "sequelize": "^3.1.1",
     "travis": "^0.1.1"
   },
