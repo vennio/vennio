@@ -13,9 +13,6 @@
 1. [Development](#development)
     1. [Requirement](#requirement)
     2. [API Documentations](#api-documentations)
-    3. [Installing Dependencies](#installing-dependencies)
-    4. [Start local server](#start-local-server)
-    5. [Deploy to production](#deploy-to-production)
 1. [Contributing](#contributing)
 
 ## Tech Stack
@@ -23,6 +20,7 @@ We used D3 and jQuery for front-end data visualization and Backbone as a framewo
 We deigned the Express backend as a RESTful API for individual deployment of components, seperation of concerns between back-end and front-end.
 We used MongoDB for data munging and mySQL as a database to optimize for querying speed.
 
+## Development
 ### Requirement
 NPM
 Node v0.10.x
