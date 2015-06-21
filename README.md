@@ -6,76 +6,24 @@
   - __Product Owner__: Irfan Baqui
   - __Scrum Master__: Mike Yao
   - __Development Team Members__: Brant Choate, Irfan Baqui, Mike Yao
+  
+The Startup industry is dynamically changing and adopting new technologies and methodologies as a fast pace. That makes it difficult to gage what the most in-demand skills are at a given point in time. We built Vennio to let users gage the Startup landscape in terms of what skills are trending, how many companies are hiring for those skills, and how much on average they're willing to pay for them.
 
 ## Table of Contents
 
 1. [Tech Stack](#tech-stack)
-1. [Development](#development)
-    1. [Requirement](#requirement)
-    2. [API Documentations](#api-documentations)
-1. [Contributing](#contributing)
 
 ## Tech Stack
-We used D3 and jQuery for front-end data visualization and Backbone as a framework for code modularity.
-We deigned the Express backend as a RESTful API for individual deployment of components, seperation of concerns between back-end and front-end.
-We used MongoDB for data munging and mySQL as a database to optimize for querying speed.
 
-## Development
-### Requirement
-NPM
-Node v0.10.x
-Bower 
+### Frontend:
+*Backbone
+*D3
+*jQuery
 
-### Api Documentations
+### Backend (RESTful API):
+*Node
+*Express
+*mySQL
 
-Server apiEndpoint: http://vennio.com/
-
-#### Skill Report
-
-* Average salaries and # of jobs grouped by skills
-```sh
-'/SalaryJobBySkill'
-```
-
-* Number of companies grouped by skills
-```sh
-'/CompanyBySkill'
-```
-
-* Average salaries and # of jobs based on location and role filters
-```sh
-/FilterJobSalaryBySkill/:locAndRole
-Example: '/FilterJobSalaryBySkill/san_francisco|hardware_engineer'
-```
-
-* Number of companies based on location and role filters
-```sh
-'/FilterCompanyBySkill/:locAndRole'
-Example: '/FilterCompanyBySkill/san_francisco|hardware_engineer'
-```
-
-#### Location Report
-* Average salaries and # of jobs
-```sh
-'/SalaryJobByLocation'
-```
-
-* Number of companies
-```sh
-'/CompanyByLocation'
-```
-
-* Average salaries and # of jobs based on skill and role filters
-```sh
-'/FilterJobSalaryByLocation/:skillAndRole'
-Example: 'FilterJobSalaryByLocation/javascript|developer'
-```
-
-* Number of companies based on skill and role filters
-```sh
-'/FilterCompanyByLocation/:skillAndRole'
-Example: '/FilterCompanyByLocation/javascript|developer'
-```
-
-## Contributing
-See [CONTRIBUTING.md](https://github.com/vennio/vennio/blob/master/_CONTRIBUTING.md) for contribution guidelines.
+### Data Analysis:
+*MongoDB
