@@ -90,7 +90,13 @@ var ChartView = Backbone.View.extend({
   draw: function(data) {
     if (data.metrics.length === 0) {
       this.canvas.selectAll('g').remove();
-      $('.barchart').text('No Results - Please Try Another Query');
+      this.$el.empty();
+      if (!window.wrongQuery) {
+        this.$el.text('No Results - Please Try Another Query. Make sure to select role from auto-complete list (ex. Developer)');
+        this.$el.attr('class', 'wrong-query');
+      }
+      window.wrongQuery = true;
+      return this.$el;
     }
 
     var _this = this;
