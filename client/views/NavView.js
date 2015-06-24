@@ -3,7 +3,7 @@ var NavView = Backbone.View.extend({
   template: _.template(
     '<div class="container">' +
       '<div class="row">' +
-        '<a href="#" class="logo">Vennio</a>' +
+        '<a href="/" class="logo">Vennio</a>' +
         '<span class="tagline">The Current State of Tech Startup Jobs</span>' +
        ' <nav>' +
           '<a href="#" class="nav-highlight" id="skillsReport">Skills Report</a>' +

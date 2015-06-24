@@ -6,6 +6,7 @@ var DashboardView = Backbone.View.extend({
   // colWidth: $('.barchart').width(),
 
 	initialize: function(params) {
+    window.wrongQuery = false;
     this.dashboardType = params.type;
 
     if (params.filter) {
